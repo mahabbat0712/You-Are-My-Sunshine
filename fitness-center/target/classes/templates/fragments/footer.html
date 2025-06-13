@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- Футер -->
+    <footer th:fragment="footer" class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Фитнес-центр</h5>
+                    <p>Ваш путь к здоровому образу жизни!</p>
+                    <p>
+                        <i class="fas fa-map-marker-alt mr-2"></i> г. Москва, ул. Спортивная, 123
+                    </p>
+                    <p>
+                        <i class="fas fa-phone mr-2"></i> +7 (123) 456-7890
+                    </p>
+                    <p>
+                        <i class="fas fa-envelope mr-2"></i> info@fitness-center.ru
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Навигация</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white">Главная</a></li>
+                        <li><a href="/about" class="text-white">О нас</a></li>
+                        <li><a href="/trainers" class="text-white">Тренеры</a></li>
+                        <li><a href="/training-cycles" class="text-white">Программы</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Мы в социальных сетях</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-white mr-3"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="text-white mr-3"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#" class="text-white mr-3"><i class="fab fa-vk fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="mb-0">&copy; 2025 Фитнес-центр. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

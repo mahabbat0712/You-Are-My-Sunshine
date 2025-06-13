@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Просмотр тренировочного цикла</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Тренировочный цикл</h1>
+        <div>
+            <a th:href="@{/admin/training-cycles/{id}/edit(id=${cycle.id})}" class="btn btn-warning mr-2">
+                <i class="fas fa-edit mr-2"></i>Редактировать
+            </a>
+            <a href="/admin/training-cycles" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i>Назад к списку
+            </a>
+        </div>
+    </div>
+    
+    <!-- Сообщения об успехе/ошибке -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="row">
+        <!-- Основная информация -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Информация о тренировочном цикле</h5>
+                </div>
+                <div class="card-body">
+                    <h2 th:text="${cycle.name}" class="mb-3">Название тренировочного цикла</h2>
+                    <div class="mb-4">
+                        <span class="badge badge-pill" 
+                              th:classappend="${cycle.active ? 'badge-success' : 'badge-secondary'}"
+                              th:text="${cycle.active ? 'Активен' : 'Неактивен'}">
+                            Статус
+                        </span>
+                        <span class="badge badge-pill badge-info" th:if="${cycle.difficulty}" th:text="${cycle.difficulty}">
+                            Сложность
+                        </span>
+                    </div>
+                    
+                    <h5>Описание:</h5>
+                    <p th:text="${cycle.description}" class="mb-4">Описание тренировочного цикла...</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Продолжительность</h5>
+                                    <p class="card-text">
+                                        <span th:text="${cycle.durationDays}">30</span> дней
+                                        (<span th:text="${cycle.getDurationWeeks()}">4</span> недель)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Тренировок в неделю</h5>
+                                    <p class="card-text" th:text="${cycle.sessionsPerWeek ?: 'Не указано'}">3</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Боковая панель -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Стоимость</h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-center mb-0" th:text="${#numbers.formatDecimal(cycle.price, 0, 'COMMA', 2, 'POINT') + ' ₽'}">
+                        2500.00 ₽
+                    </h3>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Действия</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column">
+                        <form th:if="${cycle.active}" th:action="@{/admin/training-cycles/{id}/deactivate(id=${cycle.id})}" method="post" class="mb-2">
+                            <button type="submit" class="btn btn-warning btn-block">
+                                <i class="fas fa-power-off mr-2"></i>Деактивировать
+                            </button>
+                        </form>
+                        
+                        <form th:unless="${cycle.active}" th:action="@{/admin/training-cycles/{id}/activate(id=${cycle.id})}" method="post" class="mb-2">
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fas fa-power-off mr-2"></i>Активировать
+                            </button>
+                        </form>
+                        
+                        <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteCycleModal">
+                            <i class="fas fa-trash mr-2"></i>Удалить
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Информация</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>ID:</strong> <span th:text="${cycle.id}">1</span></p>
+                    <p><strong>Создан:</strong> <span th:text="${#temporals.format(cycle.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="modal fade" id="deleteCycleModal" tabindex="-1" role="dialog" aria-labelledby="deleteCycleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCycleModalLabel">Подтверждение удаления</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите удалить тренировочный цикл <strong th:text="${cycle.name}">Название</strong>?</p>
+                    <p class="text-danger">Это действие невозможно отменить!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <form th:action="@{/admin/training-cycles/{id}/delete(id=${cycle.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

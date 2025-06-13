@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">About Us - Fitness Center</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Fitness Center</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/training-cycles}">Programs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/trainers}">Trainers</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/about}">About Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${session.user != null}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                            <span th:text="${session.username}">Username</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/users/{id}(id=${session.userId})}">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mb-4">About Fitness Center</h1>
+                <p class="lead">Welcome to Fitness Center, your premier destination for achieving health and fitness goals.</p>
+                
+                <section class="mb-5">
+                    <h2>Our Mission</h2>
+                    <p>At Fitness Center, our mission is to provide a supportive and motivating environment where individuals of all fitness levels can achieve their personal health and wellness goals. We believe that fitness is not just about physical strength but also about mental wellbeing and overall quality of life.</p>
+                </section>
+                
+                <section class="mb-5">
+                    <h2>Our Facility</h2>
+                    <p>Our state-of-the-art facility features:</p>
+                    <ul>
+                        <li>Modern exercise equipment</li>
+                        <li>Spacious workout areas</li>
+                        <li>Dedicated spaces for group classes</li>
+                        <li>Clean and well-maintained locker rooms</li>
+                        <li>Convenient parking</li>
+                    </ul>
+                </section>
+                
+                <section class="mb-5">
+                    <h2>Our Team</h2>
+                    <p>Our team consists of certified fitness professionals who are passionate about helping our members achieve their goals. Each trainer brings unique expertise and experience to provide personalized guidance and support.</p>
+                    <a th:href="@{/trainers}" class="btn btn-primary mt-2">Meet Our Trainers</a>
+                </section>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Hours of Operation</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><strong>Monday - Friday:</strong> 6:00 AM - 10:00 PM</li>
+                            <li><strong>Saturday:</strong> 8:00 AM - 8:00 PM</li>
+                            <li><strong>Sunday:</strong> 10:00 AM - 6:00 PM</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Contact Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <address>
+                            <i class="fas fa-map-marker-alt mr-2"></i> 123 Fitness Street<br>
+                            <i class="fas fa-phone mr-2"></i> (123) 456-7890<br>
+                            <i class="fas fa-envelope mr-2"></i> info@fitnesscenter.com
+                        </address>
+                        <hr>
+                        <div class="social-links">
+                            <a href="#" class="text-dark mr-2"><i class="fab fa-facebook fa-2x"></i></a>
+                            <a href="#" class="text-dark mr-2"><i class="fab fa-instagram fa-2x"></i></a>
+                            <a href="#" class="text-dark mr-2"><i class="fab fa-twitter fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Fitness Center</h5>
+                    <p>Your partner in achieving fitness goals and maintaining a healthy lifestyle.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-white">Home</a></li>
+                        <li><a th:href="@{/training-cycles}" class="text-white">Programs</a></li>
+                        <li><a th:href="@{/trainers}" class="text-white">Trainers</a></li>
+                        <li><a th:href="@{/about}" class="text-white">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <address>
+                        <i class="fas fa-map-marker-alt"></i> 123 Fitness St.<br>
+                        <i class="fas fa-phone"></i> (123) 456-7890<br>
+                        <i class="fas fa-envelope"></i> info@fitnesscenter.com
+                    </address>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>&copy; 2025 Fitness Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 

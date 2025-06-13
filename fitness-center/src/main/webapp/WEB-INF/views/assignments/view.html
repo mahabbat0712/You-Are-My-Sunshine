@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{assignments.view.title}">Assignment Details</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">
+        Assignment Details
+        <small class="text-muted" th:text="'#' + ${assignment.id}">Assignment #123</small>
+    </h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/assignments}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Assignments
+        </a>
+    </div>
+    
+    <div class="row">
+        <!-- Assignment Info -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-tasks"></i> Assignment Information
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${assignment.title}">Assignment Title</h4>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3 font-weight-bold">Status:</div>
+                        <div class="col-md-9">
+                            <span class="badge" 
+                                  th:classappend="${assignment.status == 'ASSIGNED' ? 'badge-warning' : 
+                                                  (assignment.status == 'ACCEPTED' ? 'badge-info' : 
+                                                  (assignment.status == 'COMPLETED' ? 'badge-success' : 'badge-danger'))}"
+                                  th:text="${assignment.status}">
+                                Status
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-3 font-weight-bold">Created:</div>
+                        <div class="col-md-9" th:text="${#temporals.format(assignment.createdAt, 'dd MMMM yyyy HH:mm')}">
+                            01 January 2023 10:00
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${assignment.updatedAt != null}">
+                        <div class="col-md-3 font-weight-bold">Last Updated:</div>
+                        <div class="col-md-9" th:text="${#temporals.format(assignment.updatedAt, 'dd MMMM yyyy HH:mm')}">
+                            02 January 2023 11:30
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2">Description</h5>
+                            <div class="mt-3" th:utext="${assignment.description}">
+                                <p>Assignment description goes here...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${assignment.schedule != null and !assignment.schedule.isEmpty()}">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2">Schedule</h5>
+                            <div class="mt-3" th:utext="${assignment.schedule}">
+                                <p>Assignment schedule details go here...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${!assignment.requiredEquipment.isEmpty()}">
+                        <div class="col-md-12">
+                            <h5 class="border-bottom pb-2">Required Equipment</h5>
+                            <ul class="list-group mt-3">
+                                <li class="list-group-item" th:each="equipment : ${assignment.requiredEquipment}" 
+                                    th:text="${equipment.name}">Equipment name</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Client/Trainer Info -->
+        <div class="col-md-4">
+            <!-- Order Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <i class="fas fa-shopping-cart"></i> Related Order
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Order ID:</div>
+                        <div class="col-md-8">
+                            <a th:href="@{/orders/{id}(id=${assignment.order.id})}" 
+                               th:text="${assignment.order.id}">123</a>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Program:</div>
+                        <div class="col-md-8" th:text="${assignment.order.trainingCycle.name}">
+                            Weight Loss Program
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Client Info (visible to trainers and admin) -->
+            <div class="card mb-4" th:if="${isTrainer or isAdmin}">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-user"></i> Client Information
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Name:</div>
+                        <div class="col-md-8" th:text="${assignment.order.client.fullName}">John Doe</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Email:</div>
+                        <div class="col-md-8" th:text="${assignment.order.client.email}">john.doe@example.com</div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${assignment.order.client.phone != null}">
+                        <div class="col-md-4 font-weight-bold">Phone:</div>
+                        <div class="col-md-8" th:text="${assignment.order.client.phone}">+1234567890</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trainer Info (visible to clients and admin) -->
+            <div class="card mb-4" th:if="${isClient or isAdmin}">
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-user-tie"></i> Trainer Information
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Name:</div>
+                        <div class="col-md-8" th:text="${assignment.trainer.fullName}">Jane Smith</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Email:</div>
+                        <div class="col-md-8" th:text="${assignment.trainer.email}">jane.smith@example.com</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Actions -->
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-cog"></i> Actions
+        </div>
+        <div class="card-body">
+            <!-- Client Actions -->
+            <div th:if="${isClient and assignment.order.client != null and session.username == assignment.order.client.username}">
+                <!-- Accept assignment -->
+                <form th:if="${assignment.status == 'ASSIGNED'}" 
+                      th:action="@{/assignments/{id}/accept(id=${assignment.id})}" method="post" class="d-inline mr-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Accept Assignment
+                    </button>
+                </form>
+                
+                <!-- Reject assignment -->
+                <form th:if="${assignment.status == 'ASSIGNED'}" 
+                      th:action="@{/assignments/{id}/reject(id=${assignment.id})}" method="post" class="d-inline mr-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Reject Assignment
+                    </button>
+                </form>
+                
+                <!-- Mark as completed -->
+                <form th:if="${assignment.status == 'ACCEPTED'}" 
+                      th:action="@{/assignments/{id}/complete(id=${assignment.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-flag-checkered"></i> Mark as Completed
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Trainer Actions -->
+            <div th:if="${isTrainer and assignment.trainer != null and session.username == assignment.trainer.username}">
+                <!-- Edit assignment -->
+                <a th:href="@{/assignments/{id}/edit(id=${assignment.id})}" class="btn btn-primary mr-2">
+                    <i class="fas fa-edit"></i> Edit Assignment
+                </a>
+                
+                <!-- Delete assignment -->
+                <form th:action="@{/assignments/{id}/delete(id=${assignment.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger" 
+                            onclick="return confirm('Are you sure you want to delete this assignment?');">
+                        <i class="fas fa-trash"></i> Delete Assignment
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Admin Actions -->
+            <div th:if="${isAdmin}">
+                <!-- Edit assignment -->
+                <a th:href="@{/assignments/{id}/edit(id=${assignment.id})}" class="btn btn-primary mr-2">
+                    <i class="fas fa-edit"></i> Edit Assignment
+                </a>
+                
+                <!-- Delete assignment -->
+                <form th:action="@{/assignments/{id}/delete(id=${assignment.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger" 
+                            onclick="return confirm('Are you sure you want to delete this assignment?');">
+                        <i class="fas fa-trash"></i> Delete Assignment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

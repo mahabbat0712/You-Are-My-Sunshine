@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{assignments.create.title}">Create Assignment</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">
+        <i class="fas fa-plus-circle"></i> Create New Assignment
+    </h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/assignments}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Assignments
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-tasks"></i> Assignment Details
+        </div>
+        <div class="card-body">
+            <form th:action="@{/assignments/create}" method="post" th:object="${assignment}" id="assignmentForm">
+                <!-- Order Selection -->
+                <div class="form-group mb-4">
+                    <label for="orderId" class="font-weight-bold">Select Order <span class="text-danger">*</span></label>
+                    <select class="form-control" id="orderId" name="orderId" required>
+                        <option value="">-- Select Order --</option>
+                        <option th:each="order : ${assignableOrders}" 
+                                th:value="${order.id}" 
+                                th:text="${'Order #' + order.id + ' - ' + order.trainingCycle.name + ' - Client: ' + order.client.fullName}">
+                            Order #123 - Weight Loss Program - Client: John Doe
+                        </option>
+                    </select>
+                    <small class="form-text text-muted">
+                        Only paid orders with an assigned trainer are shown here.
+                    </small>
+                </div>
+                
+                <!-- Category Selection -->
+                <div class="form-group mb-4">
+                    <label for="categoryId" class="font-weight-bold">Assignment Category <span class="text-danger">*</span></label>
+                    <select class="form-control" id="categoryId" name="categoryId" required>
+                        <option value="">-- Select Category --</option>
+                        <option th:each="category : ${categories}" 
+                                th:value="${category.id}" 
+                                th:text="${category.name}">
+                            Category Name
+                        </option>
+                    </select>
+                    <small class="form-text text-muted">
+                        Select the type of assignment you are creating.
+                    </small>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Assignment Title -->
+                <div class="form-group mb-4">
+                    <label for="title" class="font-weight-bold">Title <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}" 
+                           placeholder="Enter assignment title" required minlength="3" maxlength="100">
+                    <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                        Title Error
+                    </div>
+                </div>
+                
+                <!-- Assignment Description -->
+                <div class="form-group mb-4">
+                    <label for="description" class="font-weight-bold">Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="description" th:field="*{description}" 
+                              rows="6" placeholder="Enter detailed instructions for the client" required></textarea>
+                    <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                        Description Error
+                    </div>
+                    <small class="form-text text-muted">
+                        Provide clear instructions, goals, and any specific techniques the client should follow.
+                    </small>
+                </div>
+                
+                <!-- Assignment Schedule -->
+                <div class="form-group mb-4">
+                    <label for="schedule" class="font-weight-bold">Schedule</label>
+                    <textarea class="form-control" id="schedule" th:field="*{schedule}" 
+                              rows="3" placeholder="Enter schedule details (e.g., Monday, Wednesday, Friday)"></textarea>
+                    <small class="form-text text-muted">
+                        Specify when the client should perform these exercises (optional).
+                    </small>
+                </div>
+                
+                <!-- Required Equipment -->
+                <div class="form-group mb-4">
+                    <label class="font-weight-bold">Required Equipment</label>
+                    <div class="card card-body bg-light">
+                        <div class="row" id="equipmentContainer">
+                            <div th:each="equipment : ${availableEquipment}" class="col-md-4 mb-2">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" 
+                                           th:id="${'equipment_' + equipment.id}"
+                                           th:value="${equipment.id}" 
+                                           name="equipmentIds">
+                                    <label class="custom-control-label" 
+                                           th:for="${'equipment_' + equipment.id}"
+                                           th:text="${equipment.name}">Equipment Name</label>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(availableEquipment)}" class="col-12">
+                                <p class="text-muted mb-0">No equipment available.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">
+                        Select all equipment that the client will need for this assignment.
+                    </small>
+                </div>
+                
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="submitButton">
+                        <i class="fas fa-save"></i> Create Assignment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add JavaScript to handle form submission -->
+    <script th:inline="javascript">
+        // Display in console that form is loaded
+        console.log('Assignment creation form loaded');
+
+        // Add form submit event directly without validation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up form handler');
+            
+            // Add debug alerts to make sure JavaScript is working
+            alert('Assignment form loaded - ready to submit');
+            
+            // Log all form fields at page load to verify they exist
+            const form = document.getElementById('assignmentForm');
+            const orderId = document.getElementById('orderId');
+            const categoryId = document.getElementById('categoryId');
+            const title = document.getElementById('title');
+            const description = document.getElementById('description');
+            
+            console.log('Form exists:', !!form);
+            console.log('OrderId field exists:', !!orderId);
+            console.log('CategoryId field exists:', !!categoryId);
+            console.log('Title field exists:', !!title);
+            console.log('Description field exists:', !!description);
+            
+            if (form) {
+                form.onsubmit = function() {
+                    console.log('Form submitted!');
+                    // Return true to allow form submission
+                    return true;
+                };
+            }
+        });
+    </script>
+</section>
+</body>
+</html> 

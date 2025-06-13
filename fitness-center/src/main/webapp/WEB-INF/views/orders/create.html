@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{orders.create.title}">Create Order</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4" th:text="#{orders.create}">Purchase Training Program</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/orders}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> <span th:text="#{common.back}">Back to Orders</span>
+        </a>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-center">
+            <ul class="nav nav-pills nav-fill w-75">
+                <li class="nav-item">
+                    <span class="nav-link active">
+                        <span class="badge badge-primary mr-2">1</span>
+                        <span th:text="#{orders.create.step1}">Select Program</span>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link disabled">
+                        <span class="badge badge-secondary mr-2">2</span>
+                        <span th:text="#{orders.create.step2}">Preview</span>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link disabled">
+                        <span class="badge badge-secondary mr-2">3</span>
+                        <span th:text="#{orders.create.step3}">Confirm</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Available Training Programs -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-dumbbell"></i> <span th:text="#{orders.create.availablePrograms}">Available Training Programs</span>
+        </div>
+        <div class="card-body">
+            <div th:if="${#lists.isEmpty(trainingCycles)}" class="alert alert-info">
+                <span th:text="#{orders.create.noPrograms}">No training programs available at the moment.</span>
+            </div>
+            
+            <div class="row" th:unless="${#lists.isEmpty(trainingCycles)}">
+                <div class="col-md-6 col-lg-4 mb-4" th:each="cycle : ${trainingCycles}">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0" th:text="${cycle.name}">Weight Loss Program</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-justify" th:text="${#strings.abbreviate(cycle.description, 150)}">
+                                A comprehensive weight loss program designed to help you achieve your goals with professional support.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <i class="far fa-clock text-muted"></i> 
+                                    <span th:text="${cycle.durationWeeks}">12</span>
+                                    <span th:text="#{orders.view.weeks}">weeks</span>
+                                </div>
+                                <h5 class="mb-0 font-weight-bold text-primary" th:text="${#numbers.formatCurrency(cycle.price)}">$299.99</h5>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white text-center border-top-0">
+                            <a th:href="@{/orders/create/preview/{id}(id=${cycle.id})}" class="btn btn-primary btn-block">
+                                <i class="fas fa-shopping-cart"></i> <span th:text="#{orders.create.select}">Select</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

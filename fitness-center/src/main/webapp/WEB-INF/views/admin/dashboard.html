@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Панель администратора | Фитнес-центр</title>
+    <style layout:fragment="styles">
+        .stat-card {
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .admin-section {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 class="mb-4">Панель администратора</h1>
+    
+    <!-- Сообщения об ошибках и успешных операциях -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    
+    <!-- Основные статистические показатели -->
+    <div class="row admin-section">
+        <div class="col-md-3">
+            <div class="card stat-card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-users card-icon"></i>
+                    <h5 class="card-title">Пользователи</h5>
+                    <h2 class="card-text" th:text="${totalUsers}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card bg-success text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-friends card-icon"></i>
+                    <h5 class="card-title">Клиенты</h5>
+                    <h2 class="card-text" th:text="${totalClients}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card bg-info text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-dumbbell card-icon"></i>
+                    <h5 class="card-title">Тренеры</h5>
+                    <h2 class="card-text" th:text="${totalTrainers}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card bg-warning text-white">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-cart card-icon"></i>
+                    <h5 class="card-title">Заказы</h5>
+                    <h2 class="card-text" th:text="${totalOrders}">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Быстрые ссылки для навигации -->
+    <div class="row admin-section">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Быстрый доступ</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="/admin/users" class="btn btn-outline-primary btn-block mb-2">
+                                <i class="fas fa-users mr-2"></i> Управление пользователями
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/admin/training-cycles-redirect" class="btn btn-outline-success btn-block mb-2">
+                                <i class="fas fa-dumbbell mr-2"></i> Тренировочные циклы
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/admin/orders" class="btn btn-outline-info btn-block mb-2">
+                                <i class="fas fa-shopping-cart mr-2"></i> Заказы и статистика
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="/admin/discounts" class="btn btn-outline-warning btn-block mb-2">
+                                <i class="fas fa-percent mr-2"></i> Управление скидками
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-4 offset-md-4">
+                            <a href="/admin/init-accounts" class="btn btn-outline-danger btn-block">
+                                <i class="fas fa-user-shield mr-2"></i> Создать аккаунты admin/trainer
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Графики и дополнительная статистика -->
+    <div class="row admin-section">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Статистика заказов</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="ordersChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Активные тренировочные циклы</h5>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-center display-4" th:text="${activeCycles}">0</h2>
+                    <p class="text-center">
+                        <a href="/admin/training-cycles-redirect" class="btn btn-primary mt-3">
+                            Управление циклами
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        // Данные для графика заказов
+        var orderStats = /*[[${orderStats}]]*/ {};
+        var ctx = document.getElementById('ordersChart').getContext('2d');
+        
+        var labels = [];
+        var data = [];
+        var backgroundColors = [
+            'rgba(255, 205, 86, 0.7)',  // Желтый для PENDING
+            'rgba(54, 162, 235, 0.7)',  // Синий для PAID
+            'rgba(75, 192, 192, 0.7)',  // Зеленый для COMPLETED
+            'rgba(255, 99, 132, 0.7)'   // Красный для CANCELLED
+        ];
+        
+        // Преобразование данных для графика
+        for (var key in orderStats) {
+            if (orderStats.hasOwnProperty(key)) {
+                labels.push(key);
+                data.push(orderStats[key]);
+            }
+        }
+        
+        var ordersChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        });
+    </script>
+</th:block>
+</body>
+</html> 

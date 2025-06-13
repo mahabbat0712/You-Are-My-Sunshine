@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Управление тренировочными циклами</title>
+    <style>
+        .price-column {
+            text-align: right;
+            white-space: nowrap;
+        }
+        .cycle-actions {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Управление тренировочными циклами</h1>
+        <a href="/admin/training-cycles/create" class="btn btn-primary">
+            <i class="fas fa-plus-circle mr-2"></i>Создать новый цикл
+        </a>
+    </div>
+    
+    <!-- Сообщения об ошибках и успешных операциях -->
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Фильтры и поиск -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form action="/admin/training-cycles" method="get" class="row">
+                <div class="col-md-4 mb-2">
+                    <label for="statusFilter">Фильтр по статусу</label>
+                    <select id="statusFilter" name="status" class="form-control">
+                        <option value="">Все статусы</option>
+                        <option value="active" th:selected="${param.status != null && param.status[0] == 'active'}">Активные</option>
+                        <option value="inactive" th:selected="${param.status != null && param.status[0] == 'inactive'}">Неактивные</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label for="searchQuery">Поиск</label>
+                    <input type="text" id="searchQuery" name="query" class="form-control" th:value="${param.query != null ? param.query[0] : ''}" placeholder="Название или описание">
+                </div>
+                <div class="col-md-2 d-flex align-items-end mb-2">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-search mr-2"></i>Поиск
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Таблица тренировочных циклов -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Продолжительность</th>
+                            <th>Цена</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cycle : ${trainingCycles}">
+                            <td th:text="${cycle.id}">1</td>
+                            <td th:text="${cycle.name}">Базовый курс</td>
+                            <td th:text="${cycle.durationDays + ' дн.'}">4 нед.</td>
+                            <td class="price-column" th:text="${#numbers.formatDecimal(cycle.price, 0, 'COMMA', 2, 'POINT') + ' ₽'}">2500.00 ₽</td>
+                            <td>
+                                <span class="badge badge-pill" 
+                                      th:classappend="${cycle.active ? 'badge-success' : 'badge-secondary'}"
+                                      th:text="${cycle.active ? 'Активен' : 'Неактивен'}">
+                                    Статус
+                                </span>
+                            </td>
+                            <td class="cycle-actions">
+                                <a th:href="@{/admin/training-cycles/{id}(id=${cycle.id})}" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a th:href="@{/admin/training-cycles/{id}/edit(id=${cycle.id})}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form th:if="${cycle.active}" th:action="@{/admin/training-cycles/{id}/deactivate(id=${cycle.id})}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-secondary" title="Деактивировать">
+                                        <i class="fas fa-power-off"></i>
+                                    </button>
+                                </form>
+                                <form th:unless="${cycle.active}" th:action="@{/admin/training-cycles/{id}/activate(id=${cycle.id})}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success" title="Активировать">
+                                        <i class="fas fa-power-off"></i>
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-sm btn-danger" 
+                                        data-toggle="modal" th:data-target="'#deleteCycleModal' + ${cycle.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                
+                                <!-- Модальное окно подтверждения удаления -->
+                                <div class="modal fade" th:id="'deleteCycleModal' + ${cycle.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Подтверждение удаления</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Вы действительно хотите удалить тренировочный цикл <strong th:text="${cycle.name}">Цикл</strong>?</p>
+                                                <p class="text-danger">Это действие невозможно отменить!</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                                <form th:action="@{/admin/training-cycles/{id}/delete(id=${cycle.id})}" method="post">
+                                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(trainingCycles)}">
+                            <td colspan="6" class="text-center">Тренировочные циклы не найдены</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/admin/training-cycles(page=${currentPage - 1}, status=${param.status}, query=${param.query})}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''">
+                        <a class="page-link" th:href="@{/admin/training-cycles(page=${i}, status=${param.status}, query=${param.query})}" th:text="${i}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                        <a class="page-link" th:href="@{/admin/training-cycles(page=${currentPage + 1}, status=${param.status}, query=${param.query})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

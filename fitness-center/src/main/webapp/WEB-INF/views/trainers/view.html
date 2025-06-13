@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Trainer Profile - Fitness Center</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <h2 class="mb-4">Trainer Profile</h2>
+        
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${success}">Success message</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${error}">Error message</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        <!-- Trainer Profile Card -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user-tie mr-2"></i> <span th:text="${trainer.fullName}">Trainer Name</span></h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-user-circle fa-7x text-primary"></i>
+                        </div>
+                        
+                        <div th:if="${trainer.trainerProfile != null and trainer.trainerProfile.specialization != null}">
+                            <h5>Specialization</h5>
+                            <p class="badge badge-info p-2" th:text="${trainer.trainerProfile.specialization}">Weight Training</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-8">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr th:if="${trainer.trainerProfile != null and trainer.trainerProfile.experienceYears != null}">
+                                    <th>Experience</th>
+                                    <td>
+                                        <span th:text="${trainer.trainerProfile.experienceYears}">5</span> years
+                                    </td>
+                                </tr>
+                                <tr th:if="${trainer.trainerProfile != null and trainer.trainerProfile.hourlyRate != null}">
+                                    <th>Hourly Rate</th>
+                                    <td th:text="${#numbers.formatCurrency(trainer.trainerProfile.hourlyRate)}">$50.00</td>
+                                </tr>
+                                <tr th:if="${trainer.email != null}">
+                                    <th>Contact Email</th>
+                                    <td th:text="${trainer.email}">trainer@example.com</td>
+                                </tr>
+                                <tr th:if="${trainer.phone != null}">
+                                    <th>Phone</th>
+                                    <td th:text="${trainer.phone}">+1-234-567-8900</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Trainer Bio -->
+                <div class="mt-4" th:if="${trainer.trainerProfile != null and trainer.trainerProfile.bio != null}">
+                    <h5>About the Trainer</h5>
+                    <div class="card">
+                        <div class="card-body bg-light">
+                            <p class="mb-0" th:text="${trainer.trainerProfile.bio}">
+                                Trainer biography and information about their experience, certifications, and approach to fitness training.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Default Bio if Not Available -->
+                <div class="mt-4" th:if="${trainer.trainerProfile == null or trainer.trainerProfile.bio == null}">
+                    <h5>About the Trainer</h5>
+                    <div class="card">
+                        <div class="card-body bg-light">
+                            <p class="mb-0">
+                                This trainer is dedicated to helping clients achieve their fitness goals through personalized training programs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="text-center">
+            <a th:href="@{/trainers}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Trainers List
+            </a>
+            
+            <!-- Book Training Button for Clients -->
+            <a th:href="@{/orders/create}" class="btn btn-primary ml-2">
+                <i class="fas fa-calendar-plus"></i> Book Training
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

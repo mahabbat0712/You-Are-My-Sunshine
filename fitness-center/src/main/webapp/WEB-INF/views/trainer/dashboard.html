@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель тренера | Фитнес-центр</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .trainer-card {
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .trainer-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    
+    <div class="container mt-4">
+        <h1 class="mb-4">Панель тренера</h1>
+        
+        <!-- Сообщения об ошибках и успешных операциях -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        
+        <!-- Карточки с основной статистикой -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card trainer-card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users card-icon"></i>
+                        <h5 class="card-title">Клиенты</h5>
+                        <a href="/trainer/clients" class="btn btn-light btn-sm mt-2">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card trainer-card bg-success text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clipboard-list card-icon"></i>
+                        <h5 class="card-title">Назначения</h5>
+                        <h2 class="mb-2" th:text="${totalAssignments}">0</h2>
+                        <a href="/assignments" class="btn btn-light btn-sm">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card trainer-card bg-info text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shopping-cart card-icon"></i>
+                        <h5 class="card-title">Заказы</h5>
+                        <h2 class="mb-2" th:text="${totalOrders}">0</h2>
+                        <a href="/orders" class="btn btn-light btn-sm">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card trainer-card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <i class="fas fa-plus-circle card-icon"></i>
+                        <h5 class="card-title">Создать</h5>
+                        <a href="/assignments/create" class="btn btn-light btn-sm mt-2">Новое назначение</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Графики и детальная информация -->
+        <div class="row">
+            <!-- График назначений -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Статус назначений</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="assignmentsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Заказы, требующие внимания -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Заказы, требующие внимания</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <div th:each="order : ${paidOrders}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1" th:text="${order.trainingCycle.name}">Тренировочный цикл</h5>
+                                    <small th:text="${#temporals.format(order.paymentDate, 'dd.MM.yyyy')}">01.01.2023</small>
+                                </div>
+                                <p class="mb-1" th:text="${order.client.fullName}">Имя клиента</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge badge-info">Оплачен</span>
+                                    <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-primary">Детали</a>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(paidOrders)}" class="list-group-item">
+                                <p class="mb-0 text-muted">Нет заказов, требующих внимания</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Последние назначения -->
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Последние назначения</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Заголовок</th>
+                                        <th>Клиент</th>
+                                        <th>Дата создания</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="assignment : ${pendingAssignments}">
+                                        <td th:text="${assignment.title}">Название назначения</td>
+                                        <td th:text="${assignment.order != null && assignment.order.client != null ? assignment.order.client.fullName : 'Не указан'}">Клиент</td>
+                                        <td th:text="${#temporals.format(assignment.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023</td>
+                                        <td>
+                                            <span class="badge badge-warning">Назначено</span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/assignments/{id}(id=${assignment.id})}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a th:href="@{/assignments/{id}/edit(id=${assignment.id})}" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(pendingAssignments)}">
+                                        <td colspan="5" class="text-center">Нет назначений для отображения</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/assignments" class="btn btn-primary">Все назначения</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/footer :: footer"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        // Данные для графика назначений
+        var assignmentStats = /*[[${assignmentStats}]]*/ {};
+        
+        var labels = [];
+        var data = [];
+        var backgroundColors = [
+            'rgba(255, 205, 86, 0.7)',  // Желтый для назначенных
+            'rgba(54, 162, 235, 0.7)',  // Синий для принятых
+            'rgba(75, 192, 192, 0.7)'   // Зеленый для выполненных
+        ];
+        
+        // Преобразование данных для графика
+        for (var key in assignmentStats) {
+            if (assignmentStats.hasOwnProperty(key)) {
+                labels.push(key);
+                data.push(assignmentStats[key]);
+            }
+        }
+        
+        // График назначений
+        var ctx = document.getElementById('assignmentsChart').getContext('2d');
+        var assignmentsChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

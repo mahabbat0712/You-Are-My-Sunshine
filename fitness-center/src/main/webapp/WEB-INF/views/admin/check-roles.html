@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Проверка статуса ролей</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+    <div class="container">
+        <h1>Проверка статуса ролей</h1>
+        
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3>Статус ролей в системе</h3>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Роль</th>
+                            <th>Существует</th>
+                            <th>Количество пользователей</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ADMIN</td>
+                            <td>
+                                <span th:if="${adminRoleExists}" class="badge badge-success">Да</span>
+                                <span th:unless="${adminRoleExists}" class="badge badge-danger">Нет</span>
+                            </td>
+                            <td th:text="${adminCount}">0</td>
+                        </tr>
+                        <tr>
+                            <td>TRAINER</td>
+                            <td>
+                                <span th:if="${trainerRoleExists}" class="badge badge-success">Да</span>
+                                <span th:unless="${trainerRoleExists}" class="badge badge-danger">Нет</span>
+                            </td>
+                            <td th:text="${trainerCount}">0</td>
+                        </tr>
+                        <tr>
+                            <td>CLIENT</td>
+                            <td>
+                                <span th:if="${clientRoleExists}" class="badge badge-success">Да</span>
+                                <span th:unless="${clientRoleExists}" class="badge badge-danger">Нет</span>
+                            </td>
+                            <td th:text="${clientCount}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="/admin/init-accounts" class="btn btn-primary">Инициализировать аккаунты</a>
+            <a href="/login" class="btn btn-secondary">Вернуться на страницу входа</a>
+        </div>
+    </div>
+</body>
+</html> 

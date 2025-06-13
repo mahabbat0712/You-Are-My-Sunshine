@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      th:replace="layout :: common_layout(~{::title}, ~{::section})">
+<head>
+  <title>Просмотр пользователя | Панель администратора</title>
+</head>
+<body>
+  <section class="container my-5">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1>Информация о пользователе</h1>
+          <div>
+            <a th:href="@{/admin/users}" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Назад к списку
+            </a>
+            <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" class="btn btn-primary">
+              <i class="fas fa-edit"></i> Редактировать
+            </a>
+          </div>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success" role="alert">
+          <span th:text="${success}">Успешно</span>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+          <span th:text="${error}">Ошибка</span>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5>Детали пользователя</h5>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">ID:</div>
+              <div class="col-md-9" th:text="${user.id}">1</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Имя:</div>
+              <div class="col-md-9" th:text="${user.firstName}">Имя</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Фамилия:</div>
+              <div class="col-md-9" th:text="${user.lastName}">Фамилия</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Email:</div>
+              <div class="col-md-9" th:text="${user.email}">email@example.com</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Телефон:</div>
+              <div class="col-md-9" th:text="${user.phone}">+7 999 123-45-67</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Роли:</div>
+              <div class="col-md-9">
+                <span th:each="role, iterStat : ${user.roles}" class="badge bg-primary me-1" 
+                      th:text="${role}">ROLE_USER</span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 fw-bold">Дата регистрации:</div>
+              <div class="col-md-9" th:text="${#temporals.format(user.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2023</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html> 

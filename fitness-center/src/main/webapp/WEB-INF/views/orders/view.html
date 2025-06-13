@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{orders.view.title}">Order Details</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">
+        <span th:text="#{orders.view.title}">Order Details</span>
+        <small class="text-muted" th:text="'#' + ${order.id}">Order #123</small>
+    </h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/orders}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> <span th:text="#{common.back}">Back to Orders</span>
+        </a>
+    </div>
+    
+    <div class="row">
+        <!-- Order Info -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-info-circle"></i> <span th:text="#{orders.view.basicInfo}">Order Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.id}">Order ID</div>
+                        <div class="col-md-8" th:text="${order.id}">123</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.date}">Order Date</div>
+                        <div class="col-md-8" th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy HH:mm')}">
+                            01 January 2023 10:00
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.status}">Status</div>
+                        <div class="col-md-8">
+                            <span class="badge" 
+                                  th:classappend="${order.status.name() == 'PENDING' ? 'badge-warning' : 
+                                                  (order.status.name() == 'PAID' ? 'badge-info' : 
+                                                  (order.status.name() == 'COMPLETED' ? 'badge-success' : 'badge-danger'))}"
+                                  th:text="${#strings.toLowerCase(#messages.msg('orders.status.' + order.status.name()))}">
+                                Pending
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${order.paymentDate != null}">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.paymentDate}">Payment Date</div>
+                        <div class="col-md-8" th:text="${#temporals.format(order.paymentDate, 'dd MMMM yyyy HH:mm')}">
+                            02 January 2023 11:30
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${order.completionDate != null}">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.completionDate}">Completion Date</div>
+                        <div class="col-md-8" th:text="${#temporals.format(order.completionDate, 'dd MMMM yyyy HH:mm')}">
+                            15 February 2023 16:45
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Client Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-user"></i> <span th:text="#{orders.view.clientInfo}">Client Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.client}">Client</div>
+                        <div class="col-md-8" th:text="${order.client.fullName}">John Doe</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.email}">Email</div>
+                        <div class="col-md-8" th:text="${order.client.email}">john.doe@example.com</div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${order.client.phone != null}">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.phone}">Phone</div>
+                        <div class="col-md-8" th:text="${order.client.phone}">+1234567890</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Training Program and Price Info -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <i class="fas fa-dumbbell"></i> <span th:text="#{orders.view.programInfo}">Training Program</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${order.trainingCycle.name}">Weight Loss Program</h5>
+                    <p class="card-text" th:text="${order.trainingCycle.description}">
+                        A comprehensive weight loss program designed to help you achieve your goals.
+                    </p>
+                    
+                    <div class="row mb-3 mt-4">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.duration}">Duration</div>
+                        <div class="col-md-8">
+                            <span th:text="${order.trainingCycle.durationWeeks}">12</span>
+                            <span th:text="#{orders.view.weeks}">weeks</span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.originalPrice}">Original Price</div>
+                        <div class="col-md-8" th:text="${#numbers.formatCurrency(order.originalPrice)}">$100.00</div>
+                    </div>
+                    
+                    <div class="row mb-3" th:if="${order.discountPercentage != null and order.discountPercentage.compareTo(T(java.math.BigDecimal).ZERO) > 0}">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.discount}">Discount</div>
+                        <div class="col-md-8">
+                            <span th:text="${#numbers.formatDecimal(order.discountPercentage, 1, 2) + '%'}">10.00%</span>
+                            <span class="text-muted ml-2">
+                                (<span th:text="${#numbers.formatCurrency(order.originalPrice.subtract(order.finalPrice))}">$10.00</span>)
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.finalPrice}">Final Price</div>
+                        <div class="col-md-8">
+                            <span class="font-weight-bold" th:text="${#numbers.formatCurrency(order.finalPrice)}">$90.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trainer Information -->
+            <div class="card mb-4" th:if="${order.trainer != null}">
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-user-tie"></i> <span th:text="#{orders.view.trainerInfo}">Trainer Information</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.trainer}">Trainer</div>
+                        <div class="col-md-8" th:text="${order.trainer.fullName}">Jane Smith</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold" th:text="#{orders.view.trainerEmail}">Email</div>
+                        <div class="col-md-8" th:text="${order.trainer.email}">jane.smith@example.com</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Assign Trainer (Admin Only) -->
+            <div class="card mb-4" th:if="${session.isAdmin and order.status.name() == 'PAID' and order.trainer == null}">
+                <div class="card-header bg-warning text-dark">
+                    <i class="fas fa-user-plus"></i> <span th:text="#{orders.admin.assignTrainer}">Assign Trainer</span>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/orders/{id}/assign-trainer(id=${order.id})}" method="post">
+                        <div class="form-group">
+                            <label for="trainerId" th:text="#{orders.admin.selectTrainer}">Select Trainer</label>
+                            <select class="form-control" id="trainerId" name="trainerId" required>
+                                <option value="" th:text="#{common.select}">-- Select --</option>
+                                <option th:each="trainer : ${trainers}" 
+                                        th:value="${trainer.id}" 
+                                        th:text="${trainer.fullName}">
+                                    Jane Smith
+                                </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> <span th:text="#{orders.admin.assign}">Assign</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Actions & Status Change -->
+    <div class="row">
+        <div class="col-12">
+            <!-- Actions for different roles -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-tasks"></i> <span th:text="#{orders.view.actions}">Actions</span>
+                </div>
+                <div class="card-body">
+                    <!-- Client's payment action -->
+                    <div th:if="${order.status.name() == 'PENDING' and !session.isAdmin}" class="mb-3">
+                        <a th:href="@{/orders/{id}/payment(id=${order.id})}" class="btn btn-success">
+                            <i class="fas fa-credit-card"></i> <span th:text="#{orders.pay}">Pay Now</span>
+                        </a>
+                        <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" class="d-inline ml-2">
+                            <button type="submit" class="btn btn-danger" 
+                                    th:onclick="'return confirm(\'' + #{orders.confirmCancel} + '\');'">
+                                <i class="fas fa-times"></i> <span th:text="#{orders.cancel}">Cancel Order</span>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Admin actions -->
+                    <div th:if="${session.isAdmin}" class="mb-3">
+                        <h5 th:text="#{orders.admin.actions}">Admin Actions</h5>
+                        <div class="btn-group">
+                            <form th:if="${order.status.name() == 'PENDING'}" 
+                                  th:action="@{/orders/{id}/mark-paid(id=${order.id})}" method="post" class="mr-2">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> <span th:text="#{orders.admin.markPaid}">Mark as Paid</span>
+                                </button>
+                            </form>
+                            
+                            <form th:if="${order.status.name() == 'PAID'}" 
+                                  th:action="@{/orders/{id}/mark-completed(id=${order.id})}" method="post" class="mr-2">
+                                <button type="submit" class="btn btn-info">
+                                    <i class="fas fa-flag-checkered"></i> <span th:text="#{orders.admin.markCompleted}">Mark as Completed</span>
+                                </button>
+                            </form>
+                            
+                            <form th:if="${order.status.name() == 'PENDING'}" 
+                                  th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm(/*[[#{orders.confirmCancel}]]*/ 'Are you sure?')">
+                                    <i class="fas fa-times"></i> <span th:text="#{orders.admin.cancel}">Cancel Order</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Trainer Actions -->
+                    <div th:if="${session.isTrainer and order.trainer != null and session.username == order.trainer.username}" class="mb-3">
+                        <h5>Trainer Actions</h5>
+                        <div>
+                            <!-- Create assignment for paid orders -->
+                            <a th:if="${order.status.name() == 'PAID'}" 
+                               th:href="@{/assignments/create}" class="btn btn-primary mr-2">
+                                <i class="fas fa-plus-circle"></i> Create Assignment
+                            </a>
+                            
+                            <!-- View existing assignments -->
+                            <a th:href="@{/assignments(orderId=${order.id})}" class="btn btn-info">
+                                <i class="fas fa-clipboard-list"></i> View Assignments
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Client Actions -->
+                    <div th:if="${session.isClient and order.client != null and session.username == order.client.username}">
+                        <!-- Cancel for pending orders -->
+                        <form th:if="${order.status.name() == 'PENDING'}" 
+                              th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">
+                                <i class="fas fa-times"></i> <span th:text="#{orders.cancel}">Cancel Order</span>
+                            </button>
+                            
+                            <!-- Cancel Modal -->
+                            <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" th:text="#{common.confirm}">Confirm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p th:text="#{orders.confirmCancel}">Are you sure you want to cancel this order?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                                                    th:text="#{common.no}">No</button>
+                                            <button type="submit" class="btn btn-danger" 
+                                                    th:text="#{common.yes}">Yes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Review for completed orders without review -->
+                        <div th:if="${order.status.name() == 'COMPLETED' and !order.isReviewed()}" class="mt-4">
+                            <h5 th:text="#{orders.view.leaveReview}">Leave a Review</h5>
+                            <form th:action="@{/orders/{id}/review(id=${order.id})}" method="post" th:object="${review}">
+                                <div class="form-group">
+                                    <label for="rating" th:text="#{orders.view.rating}">Rating</label>
+                                    <select class="form-control" id="rating" th:field="*{rating}" required>
+                                        <option value="5" th:text="#{orders.view.rating5}">5 - Excellent</option>
+                                        <option value="4" th:text="#{orders.view.rating4}">4 - Good</option>
+                                        <option value="3" th:text="#{orders.view.rating3}">3 - Average</option>
+                                        <option value="2" th:text="#{orders.view.rating2}">2 - Poor</option>
+                                        <option value="1" th:text="#{orders.view.rating1}">1 - Very Poor</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comment" th:text="#{orders.view.comment}">Comment</label>
+                                    <textarea class="form-control" id="comment" rows="4" th:field="*{comment}" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> <span th:text="#{orders.view.submitReview}">Submit Review</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Review (if exists) -->
+            <div class="card mt-4" th:if="${order.review != null}">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-star"></i> <span th:text="#{orders.view.review}">Review</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="font-weight-bold mr-2" th:text="#{orders.view.rating} + ':'">Rating:</span>
+                            <span th:text="${order.review.rating}">5</span>/5
+                            <span class="ml-2">
+                                <i class="fas fa-star text-warning" th:each="i : ${#numbers.sequence(1, order.review.rating)}"></i>
+                                <i class="far fa-star text-warning" th:each="i : ${#numbers.sequence(1, 5 - order.review.rating)}"></i>
+                            </span>
+                        </div>
+                        <div class="text-muted" th:if="${order.review.createdDate != null}"
+                             th:text="${#temporals.format(order.review.createdDate, 'dd MMMM yyyy')}">
+                            15 March 2023
+                        </div>
+                    </div>
+                    
+                    <p class="card-text" th:text="${order.review.comment}">
+                        This training program was excellent! I achieved great results and the trainer was very supportive.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

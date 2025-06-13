@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{assignments.edit.title}">Edit Assignment</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">
+        <i class="fas fa-edit"></i> Edit Assignment
+        <small class="text-muted" th:text="'#' + ${assignment.id}">Assignment #123</small>
+    </h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Buttons -->
+    <div class="mb-4">
+        <a th:href="@{/assignments/{id}(id=${assignment.id})}" class="btn btn-secondary mr-2">
+            <i class="fas fa-arrow-left"></i> Back to Assignment
+        </a>
+        <a th:href="@{/assignments}" class="btn btn-outline-secondary">
+            <i class="fas fa-list"></i> All Assignments
+        </a>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-tasks"></i> Assignment Details
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/assignments/{id}/update(id=${assignment.id})}" method="post" th:object="${assignment}">
+                        <!-- Order Information (Read-only) -->
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold">Order Information</label>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Order ID:</strong> 
+                                                <a th:href="@{/orders/{id}(id=${assignment.order.id})}" 
+                                                   th:text="${assignment.order.id}">123</a>
+                                            </p>
+                                            <p class="mb-1"><strong>Program:</strong> 
+                                                <span th:text="${assignment.order.trainingCycle.name}">Weight Loss Program</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p class="mb-1"><strong>Client:</strong> 
+                                                <span th:text="${assignment.order.client.fullName}">John Doe</span>
+                                            </p>
+                                            <p class="mb-1"><strong>Status:</strong> 
+                                                <span class="badge" 
+                                                      th:classappend="${assignment.status == 'ASSIGNED' ? 'badge-warning' : 
+                                                                     (assignment.status == 'ACCEPTED' ? 'badge-info' : 
+                                                                     (assignment.status == 'COMPLETED' ? 'badge-success' : 'badge-danger'))}"
+                                                      th:text="${assignment.status}">Status</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Assignment Title -->
+                        <div class="form-group mb-4">
+                            <label for="title" class="font-weight-bold">Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" th:field="*{title}" 
+                                   placeholder="Enter assignment title" required minlength="3" maxlength="100">
+                            <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                                Title Error
+                            </div>
+                        </div>
+                        
+                        <!-- Assignment Description -->
+                        <div class="form-group mb-4">
+                            <label for="description" class="font-weight-bold">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" th:field="*{description}" 
+                                      rows="6" placeholder="Enter detailed instructions for the client" required></textarea>
+                            <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                                Description Error
+                            </div>
+                            <small class="form-text text-muted">
+                                Provide clear instructions, goals, and any specific techniques the client should follow.
+                            </small>
+                        </div>
+                        
+                        <!-- Assignment Schedule -->
+                        <div class="form-group mb-4">
+                            <label for="schedule" class="font-weight-bold">Schedule</label>
+                            <textarea class="form-control" id="schedule" th:field="*{schedule}" 
+                                      rows="3" placeholder="Enter schedule details (e.g., Monday, Wednesday, Friday)"></textarea>
+                            <small class="form-text text-muted">
+                                Specify when the client should perform these exercises (optional).
+                            </small>
+                        </div>
+                        
+                        <!-- Required Equipment -->
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold">Required Equipment</label>
+                            <div class="card card-body bg-light">
+                                <div class="row">
+                                    <div th:each="equipment : ${availableEquipment}" class="col-md-4 mb-2">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" 
+                                                   th:id="${'equipment_' + equipment.id}"
+                                                   th:value="${equipment.id}" 
+                                                   th:checked="${assignment.requiredEquipment.contains(equipment)}"
+                                                   name="equipmentIds">
+                                            <label class="custom-control-label" 
+                                                   th:for="${'equipment_' + equipment.id}"
+                                                   th:text="${equipment.name}">Equipment Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">
+                                Select all equipment that the client will need for this assignment.
+                            </small>
+                        </div>
+                        
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> Update Assignment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-info-circle"></i> Assignment Information
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Created:</strong> 
+                        <span th:text="${#temporals.format(assignment.createdAt, 'dd MMM yyyy HH:mm')}">
+                            24 May 2025 14:30
+                        </span>
+                    </p>
+                    <p class="mb-2" th:if="${assignment.updatedAt != null}"><strong>Last Updated:</strong> 
+                        <span th:text="${#temporals.format(assignment.updatedAt, 'dd MMM yyyy HH:mm')}">
+                            25 May 2025 09:15
+                        </span>
+                    </p>
+                    
+                    <hr>
+                    
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <small>
+                            Editing this assignment will notify the client about the changes.
+                            Make sure all information is accurate before saving.
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Delete Assignment -->
+            <div class="card bg-light">
+                <div class="card-header text-danger">
+                    <i class="fas fa-trash"></i> Delete Assignment
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">
+                        Deleting this assignment will permanently remove it from the system.
+                        This action cannot be undone.
+                    </p>
+                    <form th:action="@{/assignments/{id}/delete(id=${assignment.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-block" 
+                                onclick="return confirm('Are you sure you want to delete this assignment? This action cannot be undone.');">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

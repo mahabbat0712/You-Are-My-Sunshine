@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренировочные программы - Фитнес Центр</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/static/css/main.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/" th:href="@{/}">
+                <i class="bi bi-activity me-2"></i>
+                <span>Фитнес Центр</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" th:href="@{/}">
+                            <i class="bi bi-house-door me-1"></i> Главная
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/training-cycles" th:href="@{/training-cycles}">
+                            <i class="bi bi-calendar2-week me-1"></i> Программы
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/trainers" th:href="@{/trainers}">
+                            <i class="bi bi-people me-1"></i> Тренеры
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about" th:href="@{/about}">
+                            <i class="bi bi-info-circle me-1"></i> О нас
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="navbar-nav">
+                    <!-- Отображение информации о пользователе, если залогинен -->
+                    <div class="nav-item dropdown" th:if="${session.user != null}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span th:text="${session.user.fullName}">Пользователь</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="/profile" th:href="@{/profile}">
+                                    <i class="bi bi-person me-1"></i> Профиль
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/orders" th:href="@{/orders}">
+                                    <i class="bi bi-bag me-1"></i> Мои заказы
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/assignments" th:href="@{/assignments}">
+                                    <i class="bi bi-clipboard-check me-1"></i> Мои задания
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Выйти
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Если пользователь не залогинен -->
+                    <div class="nav-item" th:unless="${session.user != null}">
+                        <a class="nav-link" href="/login" th:href="@{/login}">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Войти
+                        </a>
+                    </div>
+                    
+                    <div class="nav-item" th:unless="${session.user != null}">
+                        <a class="nav-link" href="/register" th:href="@{/register}">
+                            <i class="bi bi-person-plus me-1"></i> Регистрация
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container mt-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            <i class="bi bi-calendar2-week me-2"></i>
+            Тренировочные программы
+        </h1>
+        
+        <div>
+            <!-- Admin Actions -->
+            <div th:if="${session.user != null && session.isAdmin}">
+                <a href="/training-cycles/create" th:href="@{/training-cycles/create}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i> Добавить новую программу
+                </a>
+                
+                <div class="form-check form-switch d-inline-block ms-2">
+                    <input class="form-check-input" type="checkbox" id="showAllSwitch" 
+                           th:checked="${showAll}" onchange="toggleShowAll(this)">
+                    <label class="form-check-label" for="showAllSwitch">Показать неактивные</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flash Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${successMessage}">Успешно</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${errorMessage}">Ошибка</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Сообщение о скидке для клиентов -->
+    <div th:if="${hasDiscount}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-percent me-2"></i>
+        <span>Вам доступна персональная скидка в размере <strong th:text="${userDiscount + '%'}">10%</strong> на все тренировочные программы!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <!-- Сообщение о том, как стать клиентом при ошибке доступа -->
+    <div th:if="${param.error != null && param.error[0] == 'Только клиенты могут покупать программы'}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <span>Чтобы покупать тренировочные программы, вам нужно стать клиентом. Вы можете сделать это, нажав кнопку "Стать клиентом" в своем профиле.</span>
+        <a th:href="@{/profile}" class="btn btn-sm btn-primary ms-2">Перейти в профиль</a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <!-- No Programs Message -->
+    <div th:if="${#lists.isEmpty(cycles)}" class="alert alert-info">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        На данный момент нет доступных тренировочных программ.
+    </div>
+    
+    <!-- Training Programs Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" th:if="${!#lists.isEmpty(cycles)}">
+        <div class="col" th:each="cycle : ${cycles}">
+            <div class="card h-100" th:classappend="${!cycle.active} ? 'border-danger' : ''">
+                <div class="card-header" th:classappend="${!cycle.active} ? 'bg-danger text-white' : 'bg-primary text-white'">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" th:text="${cycle.name}">Название программы</h5>
+                        <span class="badge bg-light text-dark" th:text="${cycle.durationDays} + ' дн.'">30 дн.</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${cycle.description}">Описание программы.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Price display with pre-calculated discount -->
+                        <div th:if="${hasDiscount && cycle.discountedPrice != null && cycle.discountedPrice < cycle.price}">
+                            <span class="fs-5 fw-bold text-primary">
+                                <span class="text-decoration-line-through text-muted" th:text="${cycle.price + ' ₽'}">9999 ₽</span>
+                                <span th:text="${cycle.discountedPrice + ' ₽'}">8999 ₽</span>
+                            </span>
+                            <span class="badge bg-success ms-1" th:text="${'-' + userDiscount + '%'}">-10%</span>
+                        </div>
+                        
+                        <!-- Regular price without discount -->
+                        <div th:unless="${hasDiscount && cycle.discountedPrice != null && cycle.discountedPrice < cycle.price}">
+                            <span class="fs-5 fw-bold text-primary" th:text="${cycle.price + ' ₽'}">9999 ₽</span>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <!-- Кнопка "Подробнее" для всех пользователей -->
+                            <a th:href="@{/training-cycles/{id}(id=${cycle.id})}" class="btn btn-outline-primary">
+                                <i class="bi bi-info-circle me-1"></i> Подробнее
+                            </a>
+                            
+                            <!-- Кнопка "Купить" для авторизованных клиентов -->
+                            <a th:if="${session.user != null && session.isClient && cycle.active}" 
+                               th:href="@{/orders/create/preview/{cycleId}(cycleId=${cycle.id})}" 
+                               class="btn btn-success ms-1">
+                                <i class="bi bi-cart-plus me-1"></i> Купить
+                            </a>
+                            
+                            <!-- Кнопка "Войти для покупки" для неавторизованных -->
+                            <a th:if="${session.user == null && cycle.active}" 
+                               th:href="@{/login}" 
+                               class="btn btn-outline-success ms-1" 
+                               data-bs-toggle="tooltip" 
+                               data-bs-placement="top" 
+                               title="Войдите, чтобы приобрести программу">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small th:text="${'Создано: ' + #temporals.format(cycle.createdAt, 'dd.MM.yyyy')}">Создано: 01.01.2023</small>
+                    <span th:if="${!cycle.active}" class="badge bg-danger float-end">Неактивно</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <nav th:if="${totalPages > 1}" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/training-cycles(page=${currentPage - 1}, showAll=${showAll})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            
+            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" 
+                th:classappend="${currentPage == i} ? 'active' : ''">
+                <a class="page-link" th:href="@{/training-cycles(page=${i}, showAll=${showAll})}" th:text="${i}">1</a>
+            </li>
+            
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/training-cycles(page=${currentPage + 1}, showAll=${showAll})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</main>
+
+<footer class="bg-dark text-light mt-5 py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="bi bi-activity me-2"></i>Фитнес Центр</h5>
+                <p class="text-muted">Ваш партнер в достижении целей по фитнесу.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Ссылки</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" th:href="@{/}" class="text-muted">Главная</a></li>
+                    <li><a href="/training-cycles" th:href="@{/training-cycles}" class="text-muted">Программы</a></li>
+                    <li><a href="/trainers" th:href="@{/trainers}" class="text-muted">Тренеры</a></li>
+                    <li><a href="/about" th:href="@{/about}" class="text-muted">О нас</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Контакты</h5>
+                <address class="text-muted">
+                    <i class="bi bi-geo-alt me-2"></i>123 ул. Фитнес<br>
+                    <i class="bi bi-telephone me-2"></i>+7 (123) 456-7890<br>
+                    <i class="bi bi-envelope me-2"></i>info@fitnesscenter.ru
+                </address>
+            </div>
+        </div>
+        <div class="text-center text-muted mt-4">
+            <p>&copy; 2023 Фитнес Центр. Все права защищены.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function toggleShowAll(checkbox) {
+        window.location = `/training-cycles?showAll=${checkbox.checked}`;
+    }
+
+    // Инициализация тултипов для кнопок
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    });
+</script>
+</body>
+</html> 

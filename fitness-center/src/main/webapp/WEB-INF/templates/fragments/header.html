@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">Фитнес-центр</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">О нас</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/trainers">Тренеры</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/training-cycles">Программы</a>
+                        </li>
+                        <!-- Ссылки для администратора -->
+                        <li class="nav-item" th:if="${session.isAdmin}">
+                            <a class="nav-link" href="/admin/dashboard">Админ панель</a>
+                        </li>
+                        <!-- Ссылки для тренера -->
+                        <li class="nav-item" th:if="${session.isTrainer}">
+                            <a class="nav-link" href="/trainer/dashboard">Панель тренера</a>
+                        </li>
+                    </ul>
+                    <!-- Правая часть навигационной панели -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item" th:if="${session.user != null}">
+                            <a class="nav-link" href="/profile">
+                                <i class="fas fa-user mr-1"></i>
+                                <span th:text="${session.username}">Пользователь</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" th:if="${session.user != null && session.isClient}">
+                            <a class="nav-link" href="/orders">
+                                <i class="fas fa-shopping-cart mr-1"></i> Мои заказы
+                            </a>
+                        </li>
+                        <li class="nav-item" th:if="${session.user != null}">
+                            <a class="nav-link" href="/logout">
+                                <i class="fas fa-sign-out-alt mr-1"></i> Выход
+                            </a>
+                        </li>
+                        <li class="nav-item" th:if="${session.user == null}">
+                            <a class="nav-link" href="/login">
+                                <i class="fas fa-sign-in-alt mr-1"></i> Вход
+                            </a>
+                        </li>
+                        <li class="nav-item" th:if="${session.user == null}">
+                            <a class="nav-link" href="/register">
+                                <i class="fas fa-user-plus mr-1"></i> Регистрация
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html> 

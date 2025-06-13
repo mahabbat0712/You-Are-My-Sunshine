@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{users.view.title}">User Details</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">User Details</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Admin Action Buttons -->
+    <div class="mb-4" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+        <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit User
+        </a>
+        <button class="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteModal">
+            <i class="fas fa-trash"></i> Delete User
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/users}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Users
+        </a>
+    </div>
+    
+    <div class="row">
+        <!-- User Information -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-user"></i> Basic Information
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Username</div>
+                        <div class="col-md-8" th:text="${user.username}">john_doe</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Email</div>
+                        <div class="col-md-8" th:text="${user.email}">john.doe@example.com</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Full Name</div>
+                        <div class="col-md-8" th:text="${user.fullName}">John Doe</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Phone</div>
+                        <div class="col-md-8" th:text="${user.phone != null ? user.phone : '-'}">+1234567890</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Member Since</div>
+                        <div class="col-md-8" th:text="${#temporals.format(user.createdAt, 'dd MMMM yyyy')}">
+                            01 January 2023
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 font-weight-bold">Status</div>
+                        <div class="col-md-8">
+                            <span class="badge" th:classappend="${user.active ? 'badge-success' : 'badge-danger'}" 
+                                  th:text="${user.active ? 'Active' : 'Inactive'}">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Roles Information -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-user-tag"></i> User Roles
+                </div>
+                <div class="card-body">
+                    <div th:if="${#lists.isEmpty(user.roles)}" class="alert alert-warning">
+                        This user has no roles assigned.
+                    </div>
+                    <div th:unless="${#lists.isEmpty(user.roles)}" class="mb-3">
+                        <div th:each="role : ${user.roles}" class="mb-2">
+                            <span class="badge badge-info p-2" th:text="${role.name}">CLIENT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Client Profile Information (if exists) -->
+            <div class="card" th:if="${user.hasRole('CLIENT')}">
+                <div class="card-header bg-success text-white">
+                    <i class="fas fa-id-card"></i> Client Profile
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info" th:if="${!user.hasRole('CLIENT')}">
+                        This user is not a client. No client profile information available.
+                    </div>
+                    <div th:if="${user.hasRole('CLIENT')}">
+                        <p class="mb-3">
+                            <a th:href="@{/client-profiles/{id}(id=${user.id})}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-eye"></i> View Client Profile
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this user? This action cannot be undone.</p>
+                    <p class="text-danger font-weight-bold">Warning: Deleting this user will also delete all associated data.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <form th:action="@{/users/{id}/delete(id=${user.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

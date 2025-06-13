@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{orders.payment.title}">Payment</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">
+        <i class="fas fa-credit-card"></i> <span th:text="#{orders.payment.title}">Payment</span>
+    </h2>
+    
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle"></i> <span th:text="#{orders.payment.demoAlert}">This is a demo payment page. In a production environment, this would connect to a payment gateway.</span>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title m-0" th:text="#{orders.payment.orderDetails}">Order Summary</h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 th:text="#{orders.view.basicInfo}">Order Details:</h5>
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th th:text="#{orders.id}">Order ID:</th>
+                                <td><span th:text="${order.id}">123</span></td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{orders.program}">Training Program:</th>
+                                <td><span th:text="${order.trainingCycle.name}">Weight Loss Program</span></td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{orders.view.duration}">Duration:</th>
+                                <td><span th:text="${order.trainingCycle.durationDays}">30</span> <span th:text="#{cycle.view.duration}">days</span></td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{orders.view.originalPrice}">Original Price:</th>
+                                <td><span th:text="${#numbers.formatCurrency(order.originalPrice)}">$99.99</span></td>
+                            </tr>
+                            <tr th:if="${order.discountPercentage != null and order.discountPercentage.compareTo(T(java.math.BigDecimal).ZERO) > 0}">
+                                <th th:text="#{orders.view.discount}">Discount:</th>
+                                <td><span th:text="${#numbers.formatDecimal(order.discountPercentage, 1, 2) + '%'}">10.00%</span></td>
+                            </tr>
+                            <tr>
+                                <th class="text-primary" th:text="#{orders.view.finalPrice}">Total Amount:</th>
+                                <td class="text-primary font-weight-bold"><span th:text="${#numbers.formatCurrency(order.finalPrice)}">$89.99</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-info h-100">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="#{orders.payment.journey}">Your Fitness Journey Starts Here!</h5>
+                            <p class="card-text" th:text="#{orders.payment.journeyText}">After payment, a trainer will be assigned to your program within 24 hours.</p>
+                            <p class="card-text" th:text="#{orders.payment.personalizedPlan}">You'll receive a personalized training plan based on your fitness goals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title m-0" th:text="#{orders.payment.title}">Payment Information</h3>
+        </div>
+        
+        <div class="card-body">
+            <form th:action="@{/orders/process-payment}" method="post" class="needs-validation" novalidate>
+                <input type="hidden" name="orderId" th:value="${order.id}">
+                
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="cardName" th:text="#{orders.payment.cardName}">Name on Card</label>
+                        <input type="text" class="form-control" id="cardName" name="cardName" required>
+                        <div class="invalid-feedback">
+                            Please enter the name on your card
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="cardNumber" th:text="#{orders.payment.cardNumber}">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" name="cardNumber" 
+                            placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid card number
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="expMonth" th:text="#{orders.payment.expMonth}">Expiry Month</label>
+                        <select class="form-control" id="expMonth" name="expMonth" required>
+                            <option value="" th:text="#{common.select}">Month</option>
+                            <option value="01">01 - January</option>
+                            <option value="02">02 - February</option>
+                            <option value="03">03 - March</option>
+                            <option value="04">04 - April</option>
+                            <option value="05">05 - May</option>
+                            <option value="06">06 - June</option>
+                            <option value="07">07 - July</option>
+                            <option value="08">08 - August</option>
+                            <option value="09">09 - September</option>
+                            <option value="10">10 - October</option>
+                            <option value="11">11 - November</option>
+                            <option value="12">12 - December</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a month
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="expYear" th:text="#{orders.payment.expYear}">Expiry Year</label>
+                        <select class="form-control" id="expYear" name="expYear" required>
+                            <option value="" th:text="#{common.select}">Year</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a year
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="cvv" th:text="#{orders.payment.cvv}">CVV</label>
+                        <input type="text" class="form-control" id="cvv" name="cvv" 
+                            placeholder="123" maxlength="4" required>
+                        <div class="invalid-feedback">
+                            Please enter your CVV code
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="mb-4">
+                
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                    <label class="form-check-label" for="termsCheck" th:text="#{orders.payment.terms}">
+                        I agree to the terms and conditions of the Fitness Center
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before proceeding
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-lg btn-block" type="submit">
+                    <i class="fas fa-lock mr-2"></i> <span th:text="#{orders.payment.complete}">Complete Payment</span> (<span th:text="${#numbers.formatCurrency(order.finalPrice)}">$89.99</span>)
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> <span th:text="#{orders.payment.backToOrder}">Back to Order</span>
+        </a>
+    </div>
+    
+    <script>
+        // Format card number input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('cardNumber').addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Form validation
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        });
+    </script>
+</section>
+</body>
+</html> 
