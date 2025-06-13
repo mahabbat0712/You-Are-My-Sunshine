@@ -4,267 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88f670b5-2ffa-4d64-9960-ce3aceec56aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LAUNCH_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_FLOW.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SETUP.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-05-23-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-05-24-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-05-29-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-05-30-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-06-02-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-06-05-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-06-06-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center-2025-06-11-1.log.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/fitness-center.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/AppConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/DataInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/DatabaseConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/DatabaseMigrationRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/SessionFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/WebAppInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AboutController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AdminTrainingCycleController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AdminUserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AdminUsersController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AssignmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/DiscountController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/OrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/ProfileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/TrainerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/TrainerDashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/TrainingCycleController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/AbstractDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/AccountTypeDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/AssignmentDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/BaseDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/ClientProfileDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/DiscountRuleDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/EquipmentDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/OrderDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/RoleDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/TrainerProfileDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/TrainingCycleDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/UserDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/AccountTypeDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/AssignmentDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/ClientProfileDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/DiscountRuleDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/EquipmentDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/OrderDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/RoleDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/TrainerProfileDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/TrainingCycleDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/jdbc/ConnectionPool.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/jdbc/DatabaseManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/AccountType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/Assignment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/AssignmentCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/ClientProfile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/DiscountRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/Equipment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/Review.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/TrainerProfile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/TrainingCycle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/model/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/AssignmentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/DiscountService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/EquipmentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/OrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/SessionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/TrainerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/TrainingCycleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/AssignmentServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/DiscountServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/EquipmentServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/TrainerServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/TrainingCycleServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fitnesscenter/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/data.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1__add_id_to_client_profiles.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/messages.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/users/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/users/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/users/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/validation.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/auth/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/auth/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/fragments/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/templates/trainers/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/check-roles.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/dashboard.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/discounts/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/discounts/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/discounts/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/orders/stats.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/training-cycles/create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/training-cycles/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/training-cycles/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/training-cycles/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/users/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/users/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/users/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/assignments/create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/assignments/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/assignments/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/assignments/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/auth/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/auth/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/orders/create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/orders/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/orders/payment.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/orders/preview.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/orders/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/profile/change-password.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/profile/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/profile/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/trainer/dashboard.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/trainers/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/trainers/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/training-cycles/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/training-cycles/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/users/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/css/main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/images/hero-image.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/fitnesscenter/service/DiscountServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/fitnesscenter/service/UserServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/AppConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/DataInitializer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/DatabaseConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/DatabaseMigrationRunner.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/SessionFilter.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/WebAppInitializer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/config/WebConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AboutController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AdminController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AdminTrainingCycleController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AdminUserController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AdminUsersController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AssignmentController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/AuthController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/DiscountController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/HomeController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/OrderController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/ProfileController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/TrainerController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/TrainerDashboardController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/TrainingCycleController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/controller/UserController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/AbstractDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/AccountTypeDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/AssignmentDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/BaseDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/ClientProfileDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/DiscountRuleDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/EquipmentDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/OrderDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/RoleDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/TrainerProfileDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/TrainingCycleDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/UserDao.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/AccountTypeDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/AssignmentDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/ClientProfileDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/DiscountRuleDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/EquipmentDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/OrderDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/RoleDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/TrainerProfileDaoImpl$TrainerProfileMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/TrainerProfileDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/TrainingCycleDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/dao/impl/UserDaoImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/jdbc/ConnectionPool.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/jdbc/DatabaseManager.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/AccountType.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Assignment.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/AssignmentCategory.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/ClientProfile.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/DiscountRule.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Equipment.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Order$OrderStatus.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Order.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Review.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/Role.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/TrainerProfile.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/TrainingCycle.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/model/User.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/AssignmentService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/DiscountService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/EquipmentService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/OrderService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/SessionService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/TrainerService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/TrainingCycleService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/UserService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/AssignmentServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/DiscountServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/EquipmentServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/OrderServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/TrainerServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/TrainingCycleServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/fitnesscenter/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/db/data.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/db/migration/V1__add_id_to_client_profiles.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/db/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/log4j2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/messages.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/users/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/users/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/users/view.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/fragments/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/templates/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/validation.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.AuthenticationServiceTest.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.DiscountServiceTest.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.UserServiceTest.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.AuthenticationServiceTest.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.DiscountServiceTest.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.UserServiceTest.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/test-classes/com/fitnesscenter/service/DiscountServiceTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/test-classes/com/fitnesscenter/service/UserServiceTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools/maven/maven.zip" afterDir="false" />
+    <list default="true" id="88f670b5-2ffa-4d64-9960-ce3aceec56aa" name="Changes" comment="final version">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/fitness-center.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/fitness-center.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.DiscountServiceTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.DiscountServiceTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.UserServiceTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.fitnesscenter.service.UserServiceTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.DiscountServiceTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.DiscountServiceTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.UserServiceTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.fitnesscenter.service.UserServiceTest.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,6 +20,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mahabbat0712"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/mahabbat0712/You-Are-My-Sunshine.git",
+    "accountId": "ce961e07-a5cb-4989-bb10-0701cf0c77dc"
+  }
+}]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 8
@@ -340,8 +98,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1749819476579</updated>
-      <workItem from="1749819478832" duration="5338000" />
+      <workItem from="1749819478832" duration="6681000" />
     </task>
+    <task id="LOCAL-00001" summary="final version">
+      <option name="closed" value="true" />
+      <created>1749826893412</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749826893412</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,5 +124,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="final version" />
+    <option name="LAST_COMMIT_MESSAGE" value="final version" />
   </component>
 </project>

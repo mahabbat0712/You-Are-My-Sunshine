@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.fitnesscenter.service.UserServiceTest" time="1.573" tests="3" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.fitnesscenter.service.UserServiceTest" time="1.922" tests="3" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17\bin"/>
-    <property name="sun.java.command" value="C:\Users\admin\AppData\Local\Temp\surefire10524932424267450684\surefirebooter-20250613091706866_3.jar C:\Users\admin\AppData\Local\Temp\surefire10524932424267450684 2025-06-13T09-17-05_956-jvmRun1 surefire-20250613091706866_1tmp surefire_0-20250613091706866_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\admin\AppData\Local\Temp\surefire938280404593037890\surefirebooter-20250613111010280_3.jar C:\Users\admin\AppData\Local\Temp\surefire938280404593037890 2025-06-13T11-10-10_100-jvmRun1 surefire-20250613111010280_1tmp surefire_0-20250613111010280_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="UserServiceTest"/>
     <property name="surefire.test.class.path" value="C:\Users\admin\IdeaProjects\fitness-center\target\test-classes;C:\Users\admin\IdeaProjects\fitness-center\target\classes;C:\Users\admin\.m2\repository\org\springframework\spring-core\5.3.15\spring-core-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-jcl\5.3.15\spring-jcl-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-context\5.3.15\spring-context-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-aop\5.3.15\spring-aop-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-expression\5.3.15\spring-expression-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-beans\5.3.15\spring-beans-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-webmvc\5.3.15\spring-webmvc-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-web\5.3.15\spring-web-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\security\spring-security-core\5.6.1\spring-security-core-5.6.1.jar;C:\Users\admin\.m2\repository\org\springframework\security\spring-security-crypto\5.6.1\spring-security-crypto-5.6.1.jar;C:\Users\admin\.m2\repository\org\springframework\security\spring-security-web\5.6.1\spring-security-web-5.6.1.jar;C:\Users\admin\.m2\repository\org\springframework\security\spring-security-config\5.6.1\spring-security-config-5.6.1.jar;C:\Users\admin\.m2\repository\org\springframework\spring-jdbc\5.3.15\spring-jdbc-5.3.15.jar;C:\Users\admin\.m2\repository\org\springframework\spring-tx\5.3.15\spring-tx-5.3.15.jar;C:\Users\admin\.m2\repository\javax\servlet\javax.servlet-api\4.0.1\javax.servlet-api-4.0.1.jar;C:\Users\admin\.m2\repository\javax\annotation\javax.annotation-api\1.3.2\javax.annotation-api-1.3.2.jar;C:\Users\admin\.m2\repository\org\thymeleaf\thymeleaf\3.0.15.RELEASE\thymeleaf-3.0.15.RELEASE.jar;C:\Users\admin\.m2\repository\ognl\ognl\3.1.26\ognl-3.1.26.jar;C:\Users\admin\.m2\repository\org\javassist\javassist\3.20.0-GA\javassist-3.20.0-GA.jar;C:\Users\admin\.m2\repository\org\attoparser\attoparser\2.0.5.RELEASE\attoparser-2.0.5.RELEASE.jar;C:\Users\admin\.m2\repository\org\unbescape\unbescape\1.1.6.RELEASE\unbescape-1.1.6.RELEASE.jar;C:\Users\admin\.m2\repository\org\slf4j\slf4j-api\1.7.25\slf4j-api-1.7.25.jar;C:\Users\admin\.m2\repository\org\thymeleaf\thymeleaf-spring5\3.0.15.RELEASE\thymeleaf-spring5-3.0.15.RELEASE.jar;C:\Users\admin\.m2\repository\org\thymeleaf\extras\thymeleaf-extras-java8time\3.0.4.RELEASE\thymeleaf-extras-java8time-3.0.4.RELEASE.jar;C:\Users\admin\.m2\repository\nz\net\ultraq\thymeleaf\thymeleaf-layout-dialect\3.1.0\thymeleaf-layout-dialect-3.1.0.jar;C:\Users\admin\.m2\repository\org\apache\groovy\groovy\4.0.0\groovy-4.0.0.jar;C:\Users\admin\.m2\repository\nz\net\ultraq\groovy\groovy-extensions\2.0.0\groovy-extensions-2.0.0.jar;C:\Users\admin\.m2\repository\nz\net\ultraq\thymeleaf\thymeleaf-expression-processor\3.1.0\thymeleaf-expression-processor-3.1.0.jar;C:\Users\admin\.m2\repository\org\postgresql\postgresql\42.5.1\postgresql-42.5.1.jar;C:\Users\admin\.m2\repository\org\checkerframework\checker-qual\3.5.0\checker-qual-3.5.0.jar;C:\Users\admin\.m2\repository\org\apache\logging\log4j\log4j-api\2.20.0\log4j-api-2.20.0.jar;C:\Users\admin\.m2\repository\org\apache\logging\log4j\log4j-core\2.20.0\log4j-core-2.20.0.jar;C:\Users\admin\.m2\repository\org\apache\logging\log4j\log4j-slf4j-impl\2.20.0\log4j-slf4j-impl-2.20.0.jar;C:\Users\admin\.m2\repository\at\favre\lib\bcrypt\0.10.2\bcrypt-0.10.2.jar;C:\Users\admin\.m2\repository\at\favre\lib\bytes\1.5.0\bytes-1.5.0.jar;C:\Users\admin\.m2\repository\org\hibernate\validator\hibernate-validator\6.2.5.Final\hibernate-validator-6.2.5.Final.jar;C:\Users\admin\.m2\repository\org\jboss\logging\jboss-logging\3.4.1.Final\jboss-logging-3.4.1.Final.jar;C:\Users\admin\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\admin\.m2\repository\jakarta\validation\jakarta.validation-api\2.0.2\jakarta.validation-api-2.0.2.jar;C:\Users\admin\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.1\junit-jupiter-api-5.9.1.jar;C:\Users\admin\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\admin\.m2\repository\org\junit\platform\junit-platform-commons\1.9.1\junit-platform-commons-1.9.1.jar;C:\Users\admin\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\admin\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.1\junit-jupiter-engine-5.9.1.jar;C:\Users\admin\.m2\repository\org\junit\platform\junit-platform-engine\1.9.1\junit-platform-engine-1.9.1.jar;C:\Users\admin\.m2\repository\org\mockito\mockito-core\5.3.1\mockito-core-5.3.1.jar;C:\Users\admin\.m2\repository\net\bytebuddy\byte-buddy\1.14.4\byte-buddy-1.14.4.jar;C:\Users\admin\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.4\byte-buddy-agent-1.14.4.jar;C:\Users\admin\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\admin\.m2\repository\org\mockito\mockito-junit-jupiter\5.3.1\mockito-junit-jupiter-5.3.1.jar;C:\Users\admin\.m2\repository\org\springframework\spring-test\5.3.15\spring-test-5.3.15.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\admin\AppData\Local\Temp\surefire10524932424267450684\surefirebooter-20250613091706866_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\admin\AppData\Local\Temp\surefire938280404593037890\surefirebooter-20250613111010280_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.12+8-LTS-286"/>
@@ -57,16 +57,16 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testFindUserByUsername_UserExists" classname="com.fitnesscenter.service.UserServiceTest" time="1.528">
-    <system-out><![CDATA[09:17:08.901 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by username: testuser
+  <testcase name="testFindUserByUsername_UserExists" classname="com.fitnesscenter.service.UserServiceTest" time="1.858">
+    <system-out><![CDATA[11:10:12.716 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by username: testuser
 ]]></system-out>
   </testcase>
-  <testcase name="testFindUserByEmail_UserExists" classname="com.fitnesscenter.service.UserServiceTest" time="0.004">
-    <system-out><![CDATA[09:17:08.941 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by email: test@example.com
+  <testcase name="testFindUserByEmail_UserExists" classname="com.fitnesscenter.service.UserServiceTest" time="0.009">
+    <system-out><![CDATA[11:10:12.774 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by email: test@example.com
 ]]></system-out>
   </testcase>
-  <testcase name="testFindUserByUsername_UserDoesNotExist" classname="com.fitnesscenter.service.UserServiceTest" time="0.006">
-    <system-out><![CDATA[09:17:08.945 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by username: nonexistent
+  <testcase name="testFindUserByUsername_UserDoesNotExist" classname="com.fitnesscenter.service.UserServiceTest" time="0.013">
+    <system-out><![CDATA[11:10:12.786 [main] DEBUG com.fitnesscenter.service.impl.UserServiceImpl - Finding user by username: nonexistent
 ]]></system-out>
   </testcase>
 </testsuite>
