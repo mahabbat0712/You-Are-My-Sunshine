@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{orders.preview.title}">Order Preview</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">Предпросмотр заказа</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Успешно</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Ошибка</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Step Indicator -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-center">
+            <ul class="nav nav-pills nav-fill w-75">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/orders/create}">
+                        <span class="badge badge-success mr-2">1</span>
+                        <span>Выбор программы</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link active">
+                        <span class="badge badge-primary mr-2">2</span>
+                        <span>Предпросмотр</span>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link disabled">
+                        <span class="badge badge-secondary mr-2">3</span>
+                        <span>Подтверждение</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Order Summary -->
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-shopping-cart"></i> <span>Информация о заказе</span>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${order.trainingCycle.name}">Программа похудения</h4>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-8">
+                            <p class="text-justify" th:text="${order.trainingCycle.description}">
+                                Комплексная программа похудения, разработанная для достижения ваших целей с профессиональной поддержкой.
+                            </p>
+                            
+                            <div class="mt-4">
+                                <h5>Детали программы</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <span>Продолжительность</span>
+                                        <span>
+                                            <span th:text="${order.trainingCycle.durationDays}">30</span>
+                                            <span>дней</span>
+                                        </span>
+                                    </li>
+                                    <li th:if="${order.trainingCycle.difficulty != null}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <span>Сложность</span>
+                                        <span th:text="${order.trainingCycle.difficulty}">Средняя</span>
+                                    </li>
+                                    <li th:if="${order.trainingCycle.sessionsPerWeek != null}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <span>Тренировок в неделю</span>
+                                        <span th:text="${order.trainingCycle.sessionsPerWeek}">3</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-light mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Стоимость</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Базовая цена</span>
+                                        <span th:text="${order.originalPrice + ' ₽'}">29999 ₽</span>
+                                    </div>
+                                    
+                                    <div th:if="${order.discountPercentage != null and order.discountPercentage.compareTo(T(java.math.BigDecimal).ZERO) > 0}" 
+                                         class="d-flex justify-content-between mb-2 text-success">
+                                        <span>
+                                            <i class="fas fa-tag"></i> 
+                                            <span>Скидка</span>
+                                            (<span th:text="${#numbers.formatDecimal(order.discountPercentage, 1, 2) + '%'}">10.00%</span>)
+                                        </span>
+                                        <span>-<span th:text="${order.originalPrice.subtract(order.finalPrice) + ' ₽'}">2999 ₽</span></span>
+                                    </div>
+                                    
+                                    <hr>
+                                    
+                                    <div class="d-flex justify-content-between font-weight-bold">
+                                        <span>Итоговая цена</span>
+                                        <span th:text="${order.finalPrice + ' ₽'}">27000 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 d-flex justify-content-between">
+            <a th:href="@{/orders/create}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> <span>Назад к программам</span>
+            </a>
+            
+            <form th:action="@{/orders/create/confirm}" method="post">
+                <input type="hidden" name="cycleId" th:value="${order.trainingCycle.id}" />
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-shopping-cart"></i> <span>Оформить заказ</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Benefits Section -->
+    <div class="row mt-4">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">Преимущества нашей программы</h5>
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                                <h6>Персональный подход</h6>
+                                <p class="text-muted">План тренировок, адаптированный под ваши потребности</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
+                                <h6>План питания</h6>
+                                <p class="text-muted">Рекомендации по питанию для достижения лучших результатов</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                                <h6>Отслеживание прогресса</h6>
+                                <p class="text-muted">Мониторинг результатов и корректировка программы</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html> 

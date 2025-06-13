@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{profile.edit.title}">Edit Profile</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4" th:text="#{profile.edit}">Edit Profile</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-user-edit"></i> <span th:text="#{profile.edit}">Edit Profile</span>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/profile/edit}" method="post" th:object="${user}" class="needs-validation" novalidate>
+                <!-- User Basic Information Section -->
+                <h5 class="border-bottom pb-2 mb-4" th:text="#{profile.basicInfo}">Basic Information</h5>
+                
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{username}" />
+                <input type="hidden" th:field="*{email}" />
+                
+                <!-- First Name -->
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-3 col-form-label" th:text="#{profile.firstName}">First Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required
+                               th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                             th:errors="*{firstName}">Please provide a first name.</div>
+                    </div>
+                </div>
+                
+                <!-- Last Name -->
+                <div class="form-group row">
+                    <label for="lastName" class="col-sm-3 col-form-label" th:text="#{profile.lastName}">Last Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required
+                               th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}"
+                             th:errors="*{lastName}">Please provide a last name.</div>
+                    </div>
+                </div>
+                
+                <!-- Phone -->
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-3 col-form-label" th:text="#{profile.phone}">Phone</label>
+                    <div class="col-sm-9">
+                        <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                               th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}"
+                             th:errors="*{phone}">Invalid phone number format.</div>
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label" th:text="#{profile.password}">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="password" th:field="*{password}" />
+                        <small class="form-text text-muted" th:text="#{profile.passwordHint}">
+                            Leave blank to keep your current password.
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Client Profile Section (if user is a client) -->
+                <div th:if="${clientProfile != null}">
+                    <h5 class="border-bottom pb-2 mb-4 mt-5" th:text="#{profile.clientInfo}">Client Information</h5>
+                    
+                    <input type="hidden" name="clientProfile.id" th:value="${clientProfile.id}" />
+                    <input type="hidden" name="clientProfile.user.id" th:value="${clientProfile.user != null ? clientProfile.user.id : user.id}" />
+                    
+                    <!-- Account Type (Read Only) -->
+                    <div class="form-group row" th:if="${clientProfile.accountType != null}">
+                        <label class="col-sm-3 col-form-label" th:text="#{profile.accountType}">Account Type</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control-plaintext" 
+                                   th:value="${clientProfile.accountType.name}" readonly />
+                            <input type="hidden" name="clientProfile.accountType.id" 
+                                   th:value="${clientProfile.accountType.id}" />
+                            <small class="form-text text-muted" th:text="#{profile.accountTypeHint}">
+                                Account type can only be changed by administrators.
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- Completed Cycles (Read Only) -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" th:text="#{profile.completedCycles}">
+                            Completed Cycles
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control-plaintext" 
+                                   th:value="${clientProfile.completedCycles}" readonly />
+                            <input type="hidden" name="clientProfile.completedCycles" 
+                                   th:value="${clientProfile.completedCycles}" />
+                        </div>
+                    </div>
+                    
+                    <!-- Date of Birth -->
+                    <div class="form-group row">
+                        <label for="dateOfBirth" class="col-sm-3 col-form-label" th:text="#{profile.dateOfBirth}">
+                            Date of Birth
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" id="dateOfBirth" 
+                                   name="clientProfile.dateOfBirth"
+                                   th:value="${clientProfile.dateOfBirth}" />
+                        </div>
+                    </div>
+                    
+                    <!-- Health Notes -->
+                    <div class="form-group row">
+                        <label for="healthNotes" class="col-sm-3 col-form-label" th:text="#{profile.healthNotes}">
+                            Health Notes
+                        </label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="healthNotes" rows="4" 
+                                     name="clientProfile.healthNotes"
+                                     th:text="${clientProfile.healthNotes}"></textarea>
+                            <small class="form-text text-muted" th:text="#{profile.healthNotesHint}">
+                                Add any health conditions, restrictions, or notes that trainers should know.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="form-group row mt-4">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> <span th:text="#{common.save}">Save</span>
+                        </button>
+                        <a th:href="@{/profile}" class="btn btn-secondary ml-2">
+                            <i class="fas fa-times"></i> <span th:text="#{common.cancel}">Cancel</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</section>
+</body>
+</html> 

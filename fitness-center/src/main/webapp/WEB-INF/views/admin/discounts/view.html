@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title th:text="#{admin.discounts.view}">View Discount Rule</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 class="mb-4" th:text="#{admin.discounts.view}">View Discount Rule</h2>
+    
+    <!-- Navigation -->
+    <div class="mb-3">
+        <a th:href="@{/admin/discounts}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> <span th:text="#{common.back}">Back to List</span>
+        </a>
+        <a th:href="@{/admin/discounts/edit/{id}(id=${discount.id})}" class="btn btn-primary ml-2">
+            <i class="fas fa-edit"></i> <span th:text="#{common.edit}">Edit</span>
+        </a>
+        <form th:action="@{/admin/discounts/{id}/toggle-active(id=${discount.id})}" method="post" class="d-inline ml-2">
+            <button type="submit" class="btn" th:classappend="${discount.active ? 'btn-warning' : 'btn-success'}" 
+                    th:title="${discount.active ? #{common.deactivate} : #{common.activate}}">
+                <i class="fas" th:classappend="${discount.active ? 'fa-pause' : 'fa-play'}"></i>
+                <span th:text="${discount.active ? #{common.deactivate} : #{common.activate}}">Toggle Active</span>
+            </button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <i class="fas fa-percentage"></i> 
+            <span th:text="${discount.name}">Discount Rule Name</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.id}">ID</th>
+                                <td th:text="${discount.id}">1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.name}">Name</th>
+                                <td th:text="${discount.name}">Regular Client Loyalty</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.accountType}">Account Type</th>
+                                <td th:text="${discount.accountType != null ? discount.accountType.name : ''}">REGULAR</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.minCycles}">Min. Completed Cycles</th>
+                                <td th:text="${discount.minCompletedCycles}">3</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.percentage}">Discount %</th>
+                                <td th:text="${#numbers.formatDecimal(discount.discountPercentage, 1, 2) + '%'}">5.00%</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" th:text="#{admin.discounts.active}">Active</th>
+                                <td>
+                                    <span th:if="${discount.active}" class="badge badge-success" th:text="#{common.yes}">Yes</span>
+                                    <span th:unless="${discount.active}" class="badge badge-danger" th:text="#{common.no}">No</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <!-- Account Type Details -->
+                    <div class="card" th:if="${discount.accountType != null}">
+                        <div class="card-header bg-secondary text-white">
+                            <span th:text="#{admin.accountTypes.details}">Account Type Details</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${discount.accountType.name}">REGULAR</h5>
+                            <p class="card-text" th:text="${discount.accountType.description}">
+                                Standard individual account.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Discount explanation -->
+                    <div class="card mt-3">
+                        <div class="card-header bg-success text-white">
+                            <span th:text="#{admin.discounts.explanation}">Discount Explanation</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <span th:text="#{admin.discounts.exampleCalculation(${#numbers.formatDecimal(discount.discountPercentage, 1, 2)})}">
+                                    For example, a $100 order would receive a $5.00 discount, resulting in a final price of $95.00.
+                                </span>
+                            </p>
+                            <p class="card-text">
+                                <span th:text="#{admin.discounts.appliesTo(${discount.accountType != null ? discount.accountType.name : ''}, ${discount.minCompletedCycles})}">
+                                    This discount applies to REGULAR clients who have completed at least 3 training cycles.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <form th:action="@{/admin/discounts/delete/{id}(id=${discount.id})}" method="post" class="d-inline">
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                <i class="fas fa-trash"></i> <span th:text="#{common.delete}">Delete</span>
+            </button>
+            
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="#{common.confirm}">Confirm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p th:text="#{admin.discounts.confirmDelete(${discount.name})}">
+                                Are you sure you want to delete this discount rule?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                                    th:text="#{common.cancel}">Cancel</button>
+                            <button type="submit" class="btn btn-danger" 
+                                    th:text="#{common.delete}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html> 

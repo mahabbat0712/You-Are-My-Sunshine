@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Управление скидками</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 class="mb-4">Управление скидками</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Create Button -->
+    <div class="mb-3">
+        <a th:href="@{/admin/discounts/create}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> <span>Создать новое правило скидки</span>
+        </a>
+    </div>
+    
+    <!-- Discount Rules Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-percentage"></i> <span>Правила скидок</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="discountTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Тип аккаунта</th>
+                            <th>Мин. завершенных циклов</th>
+                            <th>Скидка %</th>
+                            <th>Активна</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${discounts.empty}">
+                            <td colspan="7" class="text-center">Правила скидок не найдены</td>
+                        </tr>
+                        <tr th:each="discount : ${discounts}">
+                            <td th:text="${discount.id}">1</td>
+                            <td th:text="${discount.name}">Regular Client Loyalty</td>
+                            <td th:text="${discount.accountType != null ? discount.accountType.name : ''}">REGULAR</td>
+                            <td th:text="${discount.minCompletedCycles}">3</td>
+                            <td th:text="${#numbers.formatDecimal(discount.discountPercentage, 1, 2) + '%'}">5.00%</td>
+                            <td>
+                                <span th:if="${discount.active}" class="badge badge-success">Да</span>
+                                <span th:unless="${discount.active}" class="badge badge-danger">Нет</span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a th:href="@{/admin/discounts/{id}(id=${discount.id})}" class="btn btn-sm btn-info" 
+                                       title="Просмотр">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a th:href="@{/admin/discounts/edit/{id}(id=${discount.id})}" class="btn btn-sm btn-primary" 
+                                       title="Редактировать">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form th:action="@{/admin/discounts/{id}/toggle-active(id=${discount.id})}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm" th:classappend="${discount.active ? 'btn-warning' : 'btn-success'}" 
+                                                th:title="${discount.active ? 'Деактивировать' : 'Активировать'}">
+                                            <i class="fas" th:classappend="${discount.active ? 'fa-pause' : 'fa-play'}"></i>
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/admin/discounts/delete/{id}(id=${discount.id})}" method="post" class="d-inline delete-form">
+                                        <button type="button" class="btn btn-sm btn-danger" title="Удалить"
+                                                data-toggle="modal" th:data-target="'#deleteModal' + ${discount.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        
+                                        <!-- Delete Confirmation Modal -->
+                                        <div class="modal fade" th:id="'deleteModal' + ${discount.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Подтверждение</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Вы уверены, что хотите удалить правило скидки "[[${discount.name}]]"?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                                        <button type="submit" class="btn btn-danger">Удалить</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Account Types Section -->
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <i class="fas fa-id-card"></i> <span>Типы аккаунтов</span>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${accountTypes.empty}">
+                            <td colspan="3" class="text-center">Типы аккаунтов не найдены</td>
+                        </tr>
+                        <tr th:each="type : ${accountTypes}">
+                            <td th:text="${type.id}">1</td>
+                            <td th:text="${type.name}">REGULAR</td>
+                            <td th:text="${type.description}">Standard individual account</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript" th:inline="none" class="init">
+    /*<![CDATA[*/
+        $(document).ready(function() {
+            $('#discountTable').DataTable({
+                "order": [[ 0, 'asc' ]]
+            });
+        });
+    /*]]>*/
+    </script>
+</th:block>
+</body>
+</html> 

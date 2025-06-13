@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title th:text="${discount.id == null ? 'Create Discount Rule' : 'Edit Discount Rule'}">Create Discount Rule</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 class="mb-4" th:text="${discount.id == null ? 'Create Discount Rule' : 'Edit Discount Rule'}">Create Discount Rule</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-percentage"></i> 
+            <span th:text="${discount.id == null ? 'Create Discount Rule' : 'Edit Discount Rule'}">Create Discount Rule</span>
+        </div>
+        <div class="card-body">
+            <form th:action="@{${discount.id == null ? '/admin/discounts/create' : '/admin/discounts/edit/' + discount.id}}"
+                  th:object="${discount}" method="post" class="needs-validation" novalidate>
+                
+                <!-- Name -->
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label" th:text="#{admin.discounts.name}">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="name" th:field="*{name}" 
+                               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                            Please provide a name.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account Type -->
+                <div class="form-group row">
+                    <label for="accountTypeId" class="col-sm-3 col-form-label" th:text="#{admin.discounts.accountType}">Account Type</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="accountTypeId" name="accountTypeId" required>
+                            <option value="" th:text="#{common.select}">-- Select --</option>
+                            <option th:each="type : ${accountTypes}" 
+                                    th:value="${type.id}" 
+                                    th:text="${type.name}"
+                                    th:selected="${discount.accountType != null && discount.accountType.id == type.id}">
+                                REGULAR
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <span th:text="#{admin.discounts.selectAccountType}">Please select an account type.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Min Completed Cycles -->
+                <div class="form-group row">
+                    <label for="minCompletedCycles" class="col-sm-3 col-form-label" th:text="#{admin.discounts.minCycles}">
+                        Min. Completed Cycles
+                    </label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="minCompletedCycles" th:field="*{minCompletedCycles}" 
+                               min="0" required th:classappend="${#fields.hasErrors('minCompletedCycles')} ? 'is-invalid'">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('minCompletedCycles')}" th:errors="*{minCompletedCycles}">
+                            Please provide a valid number (minimum 0).
+                        </div>
+                        <small class="form-text text-muted" th:text="#{admin.discounts.minCyclesHelp}">
+                            Minimum number of completed training cycles for this discount to apply.
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Discount Percentage -->
+                <div class="form-group row">
+                    <label for="discountPercentage" class="col-sm-3 col-form-label" th:text="#{admin.discounts.percentage}">
+                        Discount %
+                    </label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="discountPercentage" th:field="*{discountPercentage}" 
+                                   min="0" max="100" step="0.01" required 
+                                   th:classappend="${#fields.hasErrors('discountPercentage')} ? 'is-invalid'">
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('discountPercentage')}" 
+                                 th:errors="*{discountPercentage}">
+                                Please provide a valid percentage (0-100).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Status -->
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        <label th:text="#{admin.discounts.active}">Active</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="active" th:field="*{active}">
+                            <label class="form-check-label" for="active" th:text="#{admin.discounts.activeHelp}">
+                                Enable this discount rule
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="form-group row mt-4">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> <span th:text="#{common.save}">Save</span>
+                        </button>
+                        <a th:href="@{/admin/discounts}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> <span th:text="#{common.cancel}">Cancel</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</th:block>
+</body>
+</html> 

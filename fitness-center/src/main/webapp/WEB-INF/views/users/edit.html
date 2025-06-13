@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{users.edit.title}">Edit User</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 class="mb-4">Edit User</h2>
+    
+    <!-- Alert Messages -->
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}">Success message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}">Error message</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to User Details
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-user-edit"></i> Edit User
+        </div>
+        <div class="card-body">
+            <form th:action="@{/users/{id}/edit(id=${user.id})}" method="post" th:object="${user}" class="needs-validation" novalidate>
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{createdAt}" />
+                
+                <!-- Username (read-only) -->
+                <div class="form-group row">
+                    <label for="username" class="col-sm-3 col-form-label">Username</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control-plaintext" id="username" th:field="*{username}" readonly />
+                        <small class="form-text text-muted">Username cannot be changed</small>
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" id="email" th:field="*{email}" required
+                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                            Please provide a valid email address
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- First Name -->
+                <div class="form-group row">
+                    <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required
+                               th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                            Please provide a first name
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Last Name -->
+                <div class="form-group row">
+                    <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required
+                               th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
+                            Please provide a last name
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Phone -->
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+                    <div class="col-sm-9">
+                        <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                               th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" />
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                            Invalid phone format
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Status -->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Status</label>
+                    <div class="col-sm-9">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="active" th:field="*{active}" />
+                            <label class="form-check-label" for="active">Active</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Roles -->
+                <div class="form-group row" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <label class="col-sm-3 col-form-label">Roles</label>
+                    <div class="col-sm-9">
+                        <div class="form-check" th:each="role : ${allRoles}">
+                            <input class="form-check-input" type="checkbox" 
+                                   th:field="*{roles}" 
+                                   th:value="${role.id}" 
+                                   th:id="${'role-' + role.id}" />
+                            <label class="form-check-label" th:for="${'role-' + role.id}" 
+                                   th:text="${role.name}">Role Name</label>
+                        </div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">
+                            Please assign at least one role
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Password Change -->
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="password" name="password" />
+                        <small class="form-text text-muted">Leave blank to keep current password</small>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="form-group row">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-secondary ml-2">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</section>
+</body>
+</html> 

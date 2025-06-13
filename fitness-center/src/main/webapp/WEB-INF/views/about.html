@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Fitness Center</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Fitness Center</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/training-cycles}">Programs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/trainers}">Trainers</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" th:href="@{/about}">About Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                    <li class="nav-item dropdown" th:if="${session.user != null}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                            <span th:text="${session.username}">Username</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/users/{id}(id=${session.userId})}">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container mt-4">
+        <div class="jumbotron bg-light">
+            <h1 class="display-4">About Fitness Center</h1>
+            <p class="lead">Your partner in achieving fitness goals and maintaining a healthy lifestyle.</p>
+            <hr class="my-4">
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2>Our Mission</h2>
+                <p>
+                    At Fitness Center, we are dedicated to helping individuals transform their lives through fitness. 
+                    Our mission is to provide personalized training programs, expert guidance, and unwavering support 
+                    to every client, empowering them to reach their fullest potential.
+                </p>
+                <p>
+                    We believe that fitness is not just about physical appearance, but about overall well-being, 
+                    confidence, and quality of life. Our comprehensive approach addresses all aspects of health, 
+                    from exercise and nutrition to recovery and mental wellness.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h3 class="card-title">Our Values</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-primary text-white border-light">
+                                <i class="fas fa-check-circle mr-2"></i> Excellence in service and professionalism
+                            </li>
+                            <li class="list-group-item bg-primary text-white border-light">
+                                <i class="fas fa-check-circle mr-2"></i> Personalized approach to every client
+                            </li>
+                            <li class="list-group-item bg-primary text-white border-light">
+                                <i class="fas fa-check-circle mr-2"></i> Evidence-based training methods
+                            </li>
+                            <li class="list-group-item bg-primary text-white border-light">
+                                <i class="fas fa-check-circle mr-2"></i> Continuous education and improvement
+                            </li>
+                            <li class="list-group-item bg-primary text-white border-light">
+                                <i class="fas fa-check-circle mr-2"></i> Creating a supportive community
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="my-5">
+        
+        <h2 class="mb-4">Our Story</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <p>
+                    Founded in 2015, Fitness Center began as a small studio with just two trainers and a handful of dedicated clients. 
+                    Our founder, John Miller, a former professional athlete and certified personal trainer, envisioned a fitness 
+                    facility that would combine scientific principles with personalized care.
+                </p>
+                <p>
+                    Over the years, we have grown into a comprehensive fitness center with state-of-the-art equipment, a team of 
+                    specialized trainers, and a wide range of programs designed to meet diverse needs and goals. Despite our growth, 
+                    we maintain the same client-centered approach that has been our foundation from the beginning.
+                </p>
+                <p>
+                    Today, Fitness Center is proud to have helped thousands of clients achieve remarkable transformations. 
+                    Whether you're a beginner taking your first steps into fitness or an experienced athlete looking to reach 
+                    new heights, our doors are open to you.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-medal fa-5x text-primary mb-3"></i>
+                        <h4>Our Achievements</h4>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-trophy text-warning mr-2"></i> Best Fitness Center 2023</li>
+                            <li><i class="fas fa-trophy text-warning mr-2"></i> Top Personal Training 2022</li>
+                            <li><i class="fas fa-trophy text-warning mr-2"></i> Innovation in Fitness Award 2021</li>
+                            <li><i class="fas fa-users mr-2"></i> Over 5,000 success stories</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="my-5">
+        
+        <h2 class="mb-4">Our Team</h2>
+        <p>
+            Our team consists of certified professionals with diverse backgrounds and specializations. 
+            Each trainer brings unique expertise and perspective, ensuring that we can provide the right guidance for every client.
+            <a th:href="@{/trainers}" class="btn btn-outline-primary ml-3">Meet Our Trainers</a>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Fitness Center</h5>
+                    <p>Your partner in achieving fitness goals and maintaining a healthy lifestyle.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-white">Home</a></li>
+                        <li><a th:href="@{/training-cycles}" class="text-white">Programs</a></li>
+                        <li><a th:href="@{/trainers}" class="text-white">Trainers</a></li>
+                        <li><a th:href="@{/about}" class="text-white">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <address>
+                        <i class="fas fa-map-marker-alt"></i> 123 Fitness St.<br>
+                        <i class="fas fa-phone"></i> (123) 456-7890<br>
+                        <i class="fas fa-envelope"></i> info@fitnesscenter.com
+                    </address>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>&copy; 2025 Fitness Center. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 
